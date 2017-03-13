@@ -1,0 +1,1254 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"update",
+				"updateHashtags"
+			],
+			[
+				"last",
+				"lastKnownCount"
+			],
+			[
+				"const",
+				"const〔keyword〕"
+			],
+			[
+				"passwo",
+				"passwordConfirmation"
+			],
+			[
+				"reflow",
+				"reflowRootGroup"
+			],
+			[
+				"tim",
+				"timelineModel"
+			],
+			[
+				"computeHeader",
+				"computeHeaderWidth"
+			],
+			[
+				"Item",
+				"ItemMixin"
+			],
+			[
+				"addtio",
+				"additionalItems"
+			],
+			[
+				"option",
+				"optionsVM"
+			],
+			[
+				"detect",
+				"detectDateFormat"
+			],
+			[
+				"permissions",
+				"permissionsArray"
+			],
+			[
+				"roadma",
+				"roadmapData〔variable〕"
+			],
+			[
+				"road",
+				"roadmapData〔variable〕"
+			],
+			[
+				"makeJira",
+				"makeJiraIssuesFromCard"
+			],
+			[
+				"rep",
+				"reproSteps"
+			],
+			[
+				"tareg",
+				"targetListId"
+			],
+			[
+				"erro",
+				"errorType"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app.js",
+			"settings":
+			{
+				"buffer_size": 65,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 8953,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "controllers.js",
+			"settings":
+			{
+				"buffer_size": 13513,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/angular-seed-master/server/server.js",
+			"settings":
+			{
+				"buffer_size": 3275,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"ali",
+				"Preferences: Alignment File Settings – Default"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 593.0
+	},
+	"console":
+	{
+		"height": 241.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/richardmack/CheerPlanner",
+		"/Users/richardmack/CheerPlanner/angular-seed-master",
+		"/Users/richardmack/CheerPlanner/angular-seed-master/server"
+	],
+	"file_history":
+	[
+		"/Users/richardmack/CheerPlanner/angular-seed-master/client/index.html",
+		"/Users/richardmack/CheerPlanner/angular-seed-master/client/storage.json",
+		"/Users/richardmack/CheerPlanner/angular-seed-master/app/services.js",
+		"/Users/richardmack/Documents/CheerSaved.json",
+		"/Users/richardmack/Documents/CheerPlanner.html",
+		"/Users/richardmack/Documents/CheerPlanner.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/MergeDuplicateCustomPropertiesTask.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/anonymizer.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/Roadmap.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/IntegrationsVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/ImportAccount.html",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/IntrepidUtils.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/AccountTransfer.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/Account.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/Account.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/tests/models/Integrations.tests.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/templates/addItem.js",
+		"/Users/richardmack/roadmunk/roadmunk/reporting/map.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/ImportAccountVM.html",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/system/reports/reports/accounts.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/ImportAccountVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/AccountsAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/ModelStorage.js",
+		"/Users/richardmack/Downloads/roadmap-5875488cfc63710ffd00040b.json",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/importFromClassic.html",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/importFromClassic.js",
+		"/Users/richardmack/roadmunk/roadmunk/devops/node_modules/aws-sdk/clients/importexport.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/RoadmapsViewModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/View.Template.BaseGroupingTemplate.Mixin.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/SharingDialogVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/RecurringAccountStatusTrackingTask.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/login/login.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/settings/UsersViewModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/templates/swimlane/Swimlane.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/promiseUtils.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/node_modules/connect/examples/session.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/Item.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/ItemsAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/notifications/packageExpiryNotification.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/tests/models/tasks/RecurringAccountStatusTrackingTask.tests.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/config.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/servers/APIWorker.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/integrations/JiraIntegrationEngine.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/Item.js",
+		"/Users/richardmack/roadmunk/TestingFiles/generateRoadmunkCSV.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/promiseUtils.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/templates/timeline/Timeline.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/templates/timeline/Timeline.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/templates/swimlane/Swimlane.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/Swimlane.js",
+		"/Users/richardmack/Desktop/screensize.tsv",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/View.Mixin.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/ExportViewModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/View.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/IntrepidVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/BaseModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/server.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/User.js",
+		"/Users/richardmack/Downloads/roadmap-56d7519db241ca53040016b1.json",
+		"/Users/richardmack/Desktop/starwars.json",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/View.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/TriggerModelDependenciesTask.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/ModelDependenciesAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/CustomProperty.js",
+		"/Users/richardmack/Documents/tmp.csv",
+		"/Users/richardmack/Documents/CheerPlannerVarsity.html",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/BaseAccountModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/CustomProperty.Mixin.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/CustomProperty.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/Account.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/SyncExternalTask.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/servers/MasterServer.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/View.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/servers/TestingServer.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/View.Template.BaseGroupingTemplate.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/BaseModelMixin.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/node_modules/JSClass/JS.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelDependency.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/TrackUserProgressTask.js",
+		"/Users/richardmack/roadmunk/Roadmunk Logs Messages",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/servers/WebServer.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/tests/models/User.tests.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/table.html",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/reportsAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/TestingAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/File.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/tests/toolbox.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/UsersAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/settings/BillingViewModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/ItemDescription.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/PublishAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/ExternalAuthManager.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/CustomPropertyDialog.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/SharingDialogVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/templates/AddItem.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/Table.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/tests/lib/validationTests.js",
+		"/Users/richardmack/roadmunk/roadmunk/devops/deploy/developer-setup.md",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/RoadmapData.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/Timeline.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/syncAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/ClientIntegrationEngine.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/BaseModelMixin.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/PermissionModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/integrations/IntegrationEngine.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/IntegrationsVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/OnboardingWizardVM.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/settings/settingsViewModel.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/Errors.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/notifications/Offline.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/ModelCache.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/DeleteIntrepidOrphans.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/DeleteAccountOrphans.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/TaskManager.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelStorage.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/View.Template.Timeline.Mixin.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/system/reports/reports/accounts.html",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/bindings/roadmunk-datepicker.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/RoadmapData.Integrations.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/knockout-roadmunk-select.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/User.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/api/RoadmapDataAPI.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/models/RoadmapData.Integrations.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelCache.js",
+		"/Users/richardmack/Downloads/testlink-1.9.15/config.inc.php",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/stripe.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/templates/table/Table.js",
+		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/timeline.html"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"<project>,-*/node_modules/*,-*/vendor/*,-*/app/build/*",
+			"",
+			"<project>,-*/node_modules/*,-*/vendor/*,-*/app/build/*",
+			"",
+			"<project>,-*/node_modules/*,-*/vendor/*,-*/app/build/*",
+			"<project>,-*/node_modules/*,-*/vendor/*",
+			"<project>,-*/node_modules/*,-*/vendor/*,-*/app/build/*",
+			"<project>,-​*/node_modules/*​,-​*/vendor/*​,-​*/app/build/*",
+			"<project>, -​*/node_modules/*​, -​*/vendor/*​, -​*/app/build/*​,-*/node_modules/*",
+			"<project>, -​*/node_modules/*​, -​*/vendor/*​, -​*/app/build/*​"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"save",
+			"which",
+			"listenArrow",
+			"roadmap",
+			"hashtag",
+			"jumpToCount",
+			"note",
+			"viewingAthlete",
+			"showAthlete",
+			"z-index",
+			"Note",
+			"$scope.currentCount",
+			">\n",
+			"currentCount.rawCount",
+			"rawCount",
+			"currentCount",
+			"test test test",
+			" width",
+			"height: 100%",
+			"%;'>",
+			"unknown",
+			"Greeting never",
+			"ClassicImportEngine",
+			"import",
+			"converted",
+			"migrat",
+			"migrate",
+			"export",
+			"require",
+			"password",
+			"mergeDef",
+			"mergeDeferred",
+			"ImportFrom",
+			"merging",
+			"merging fields",
+			"we're just",
+			"merging fields",
+			"merging",
+			"merging some",
+			"duplicate fields",
+			"duplicate",
+			"duplicated",
+			"merging some of",
+			"we're just merging",
+			"field no longer exists",
+			"cannot create a custom property",
+			"doImport",
+			"importAccountData",
+			"/import",
+			"api/accounts/impor",
+			"doImport",
+			"importAccount",
+			"minimumChrome",
+			"minChrome",
+			"packageExpiry",
+			"maxAge",
+			"expiry",
+			"ItemCommon",
+			"normalize",
+			"only available",
+			"weeks",
+			"allCustom",
+			"groupByOptions",
+			"settings.users.",
+			"sharingDialog.add",
+			"shareDialog.add",
+			"invite",
+			"selectedHeader",
+			"ExportViewModel",
+			"exportToJSON",
+			"exportView",
+			"exportToJSON",
+			"Gfkkzt",
+			"are you sure you want",
+			"findOne :",
+			"findOne",
+			"cannot read property",
+			"SPRINT_FIELD",
+			"JIRA Capture",
+			"Epic Link",
+			"encodeURI",
+			"Starter",
+			"Business",
+			"\"\"",
+			"notifyDependencyUpsert",
+			"from :",
+			"Reference",
+			"notifyDependencyUpsert :",
+			"ensureArray",
+			"ensureArray(",
+			"ensureArray :",
+			"$in ",
+			"$in",
+			"notifyDependencyUpsert",
+			"$in",
+			"requestHelper",
+			"$in ",
+			"$in",
+			"modelDependencies",
+			"accounts_edit",
+			"company_id",
+			"save :",
+			"RootModel",
+			"eval(",
+			"eval",
+			"mapReduce",
+			"--test",
+			"packageexpires_at",
+			"packageexpires",
+			"updated subscript",
+			"Updated Subscription",
+			"'Item'",
+			"item",
+			"intercom",
+			"stripe_plan",
+			"stripe_account_balance",
+			"stripe_delinquent",
+			"plan",
+			"stripe",
+			"stripe_plan",
+			"stripe_plan_interval",
+			"subscriptionPeriodEnds_at",
+			",(\"\\d)",
+			"(\"\\d)",
+			"cardExpiryMonth",
+			"sendCreditCardExpiryRemind",
+			"creditCardExpiryNotification",
+			"creditCardExpiryNotificaiton"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"viewingCount",
+			"showCount",
+			"currentCount",
+			"currentCount.rawCount",
+			"rawCount",
+			"",
+			"width",
+			"",
+			"0",
+			"1",
+			"",
+			"),ObjectId($1",
+			"','",
+			",",
+			"\\n",
+			"",
+			"$1",
+			"$1\\n",
+			"$1^",
+			"$1",
+			"$1=",
+			"",
+			"=",
+			";$1",
+			"\\r\\n",
+			",",
+			"\\t$1",
+			"\\r",
+			"\\nR",
+			"\\rR",
+			"\\t",
+			"\\r\\nR",
+			"\"\"",
+			"to.equal",
+			"let",
+			"",
+			"/",
+			"\\r\\n",
+			"\\r",
+			"\\n",
+			"\\r\\n",
+			"','",
+			"\"$1\"",
+			"null,\\n",
+			"true,\\n",
+			"\\n\\}",
+			"\",\\n\"",
+			"\\{\\n",
+			"{\\n",
+			"'$1'",
+			"",
+			",,\"Date out of Range\",",
+			"",
+			",$1",
+			"$1\\n",
+			"$1",
+			"",
+			" "
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 65,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								65,
+								65
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8953,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1185,
+								1185
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "controllers.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13513,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								575,
+								575
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 3.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/richardmack/CheerPlanner/angular-seed-master/server/server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3129,
+								3129
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 1.0,
+						"translation.y": 425.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "CheerPlanner.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"map.js",
+				"reporting/map.js"
+			],
+			[
+				"integrations.test",
+				"app/server/common/tests/models/Integrations.tests.js"
+			],
+			[
+				"account",
+				"app/server/models/Account.js"
+			],
+			[
+				"importacc",
+				"app/client/views/base/ImportAccountVM.js"
+			],
+			[
+				"import",
+				"app/client/views/base/ImportAccount.html"
+			],
+			[
+				"roadma",
+				"app/server/models/Roadmap.js"
+			],
+			[
+				"accounttransf",
+				"app/server/lib/AccountTransfer.js"
+			],
+			[
+				"",
+				"app/server/api/AccountsAPI.js"
+			],
+			[
+				"anony",
+				"app/server/common/lib/anonymizer.js"
+			],
+			[
+				"mergeduplicate",
+				"app/server/models/tasks/MergeDuplicateCustomPropertiesTask.js"
+			],
+			[
+				"accountapi",
+				"app/server/api/AccountsAPI.js"
+			],
+			[
+				"importaccoun",
+				"app/client/views/base/ImportAccountVM.html"
+			],
+			[
+				"recurringa",
+				"app/server/models/tasks/RecurringAccountStatusTrackingTask.js"
+			],
+			[
+				"promis",
+				"app/server/common/lib/promiseUtils.js"
+			],
+			[
+				"promise",
+				"app/client/lib/promiseUtils.js"
+			],
+			[
+				"session",
+				"app/server/node_modules/connect/examples/session.js"
+			],
+			[
+				"item.js",
+				"app/server/common/models/Item.js"
+			],
+			[
+				"swimlane",
+				"app/client/views/base/Swimlane.js"
+			],
+			[
+				"view.js",
+				"app/client/models/View.js"
+			],
+			[
+				"server",
+				"app/server/server.js"
+			],
+			[
+				"config",
+				"app/server/config.js"
+			],
+			[
+				"login.js",
+				"app/client/login/login.js"
+			],
+			[
+				"jirain",
+				"app/server/common/lib/integrations/JiraIntegrationEngine.js"
+			],
+			[
+				"baseaccoun",
+				"app/server/common/models/BaseAccountModel.js"
+			],
+			[
+				"custompropertymix",
+				"app/server/common/models/CustomProperty.Mixin.js"
+			],
+			[
+				"custompropert",
+				"app/server/common/models/CustomProperty.js"
+			],
+			[
+				"customprop",
+				"app/client/models/CustomProperty.js"
+			],
+			[
+				"basemodel",
+				"app/server/common/models/BaseModel.js"
+			],
+			[
+				"js.js",
+				"app/server/node_modules/JSClass/JS.js"
+			],
+			[
+				"modeldpeen",
+				"app/server/models/ModelDependency.js"
+			],
+			[
+				"modeldep",
+				"app/server/models/tasks/TriggerModelDependenciesTask.js"
+			],
+			[
+				"syncexter",
+				"app/server/models/tasks/SyncExternalTask.js"
+			],
+			[
+				"accou",
+				"app/client/models/Account.js"
+			],
+			[
+				"testingser",
+				"app/server/lib/servers/TestingServer.js"
+			],
+			[
+				"testing",
+				"app/server/api/TestingAPI.js"
+			],
+			[
+				"tests/too",
+				"app/client/tests/toolbox.js"
+			],
+			[
+				"server.",
+				"app/server/server.js"
+			],
+			[
+				"webser",
+				"app/server/lib/servers/WebServer.js"
+			],
+			[
+				"table.ht",
+				"app/client/views/base/table.html"
+			],
+			[
+				"user.js",
+				"app/server/models/User.js"
+			],
+			[
+				"view",
+				"app/server/common/models/View.js"
+			],
+			[
+				"billingview",
+				"app/client/views/settings/BillingViewModel.js"
+			],
+			[
+				"itemdes",
+				"app/client/views/base/ItemDescription.js"
+			],
+			[
+				"jirai",
+				"app/server/common/lib/integrations/JiraIntegrationEngine.js"
+			],
+			[
+				"integrationen",
+				"app/server/common/lib/integrations/IntegrationEngine.js"
+			],
+			[
+				"config.",
+				"app/server/config.js"
+			],
+			[
+				"integratione",
+				"app/server/common/lib/integrations/JiraIntegrationEngine.js"
+			],
+			[
+				"integra",
+				"app/client/views/roadmaps/IntegrationsVM.js"
+			],
+			[
+				"integration",
+				"app/server/common/lib/integrations/IntegrationEngine.js"
+			],
+			[
+				"externala",
+				"app/server/lib/ExternalAuthManager.js"
+			],
+			[
+				"permissionmode",
+				"app/server/common/models/PermissionModel.js"
+			],
+			[
+				"basemode",
+				"app/client/models/BaseModelMixin.js"
+			],
+			[
+				"user.",
+				"app/server/common/models/User.js"
+			],
+			[
+				"stripe",
+				"app/client/lib/stripe.js"
+			],
+			[
+				"roadmapsview",
+				"app/client/views/roadmaps/RoadmapsViewModel.js"
+			],
+			[
+				"timeline.j",
+				"app/client/views/roadmaps/templates/timeline/Timeline.js"
+			],
+			[
+				"timeline.h",
+				"app/client/views/base/timeline.html"
+			],
+			[
+				"modelstora",
+				"app/server/models/ModelStorage.js"
+			],
+			[
+				"roadmapdata",
+				"app/server/common/models/RoadmapData.js"
+			],
+			[
+				"modelstor",
+				"app/server/common/models/ModelStorage.js"
+			],
+			[
+				"modelso",
+				"app/server/models/ModelStorage.js"
+			],
+			[
+				"deleteintrepi",
+				"app/server/models/tasks/DeleteIntrepidOrphans.js"
+			],
+			[
+				"deleteaccount",
+				"app/server/models/tasks/DeleteAccountOrphans.js"
+			],
+			[
+				"task",
+				"app/server/lib/TaskManager.js"
+			],
+			[
+				"table.html",
+				"app/client/views/base/table.html"
+			],
+			[
+				"table",
+				"app/client/views/roadmaps/templates/table/Table.js"
+			],
+			[
+				"develop",
+				"devops/deploy/developer-setup.md"
+			],
+			[
+				"itemmi",
+				"app/client/models/Item.Mixin.js"
+			],
+			[
+				"bugsu",
+				"app/client/views/system/bugSubmit.js"
+			],
+			[
+				"addite",
+				"app/client/views/roadmaps/templates/addItem.html"
+			],
+			[
+				"timeline",
+				"app/client/views/base/Timeline.js"
+			],
+			[
+				"basetempl",
+				"app/client/views/base/BaseTemplate.js"
+			],
+			[
+				"table.js",
+				"app/client/views/roadmaps/templates/table/Table.js"
+			],
+			[
+				"developer",
+				"devops/deploy/developer-setup.md"
+			],
+			[
+				"docker-",
+				"docker-compose.yml"
+			],
+			[
+				"modelcac",
+				"app/server/common/models/ModelCache.js"
+			],
+			[
+				"lambda",
+				"app/server/lambdaWrapper.js"
+			],
+			[
+				"docker-c",
+				"docker-compose.yml"
+			],
+			[
+				"resetpass",
+				"app/server/emailTemplates/userResetPassword.ejs"
+			],
+			[
+				"timleine.js",
+				"app/client/views/base/Timeline.js"
+			],
+			[
+				"login.j",
+				"app/server/routes/login.js"
+			],
+			[
+				"user.j",
+				"app/server/models/User.js"
+			],
+			[
+				"privatekey",
+				"app/server/privatekey.pem"
+			],
+			[
+				"syncexte",
+				"app/server/models/tasks/SyncExternalTask.js"
+			],
+			[
+				"env",
+				"app/server/common/lib/env.js"
+			],
+			[
+				"env.js",
+				"app/server/common/lib/env.js"
+			],
+			[
+				"gulpfil",
+				"devops/gulpfile.client.js"
+			],
+			[
+				"settings",
+				"app/client/views/settings/settingsViewModel.js"
+			],
+			[
+				"reports.html",
+				"app/server/views/reports.html"
+			],
+			[
+				"reportsap",
+				"app/server/api/reportsAPI.js"
+			],
+			[
+				"reports",
+				"app/server/api/reportsAPI.js"
+			],
+			[
+				"main.js",
+				"app/client/main.js"
+			],
+			[
+				"jirainte",
+				"app/server/common/lib/integrations/JiraIntegrationEngine.js"
+			],
+			[
+				"integrationengin",
+				"app/server/common/lib/integrations/IntegrationEngine.js"
+			],
+			[
+				"taskmanag",
+				"app/server/lib/TaskManager.js"
+			],
+			[
+				"taskmana",
+				"app/server/lib/TaskManager.js"
+			],
+			[
+				"extra",
+				"app/client/lib/extraBindings.js"
+			],
+			[
+				"confi",
+				"app/server/config.js"
+			],
+			[
+				"login.tests.j",
+				"app/client/tests/login/login.tests.js"
+			],
+			[
+				"usersap",
+				"app/server/api/UsersAPI.js"
+			],
+			[
+				"account.js",
+				"app/server/common/models/Account.js"
+			],
+			[
+				"login",
+				"app/client/login/login.js"
+			],
+			[
+				"synctask",
+				"app/server/models/tasks/SyncExternalTask.js"
+			],
+			[
+				"roadmunk-selec",
+				"app/client/lib/knockout-roadmunk-select.js"
+			],
+			[
+				"set.js",
+				"app/server/common/models/Set.js"
+			],
+			[
+				"passport",
+				"app/server/node_modules/passport.socketio/test/fixture/setupPassport.js"
+			],
+			[
+				"usersa",
+				"app/server/api/UsersAPI.js"
+			],
+			[
+				"externalau",
+				"app/server/lib/ExternalAuthManager.js"
+			],
+			[
+				"toolbox",
+				"app/server/common/tests/toolbox.js"
+			],
+			[
+				"modelstorage",
+				"app/client/models/ModelStorage.js"
+			],
+			[
+				"userapi",
+				"app/server/api/UsersAPI.js"
+			],
+			[
+				"login.test",
+				"app/client/tests/login/login.tests.js"
+			],
+			[
+				"user",
+				"app/server/common/models/User.js"
+			],
+			[
+				"testingap",
+				"app/server/api/TestingAPI.js"
+			],
+			[
+				"users.test",
+				"app/client/tests/api/UsersAPI.tests.js"
+			],
+			[
+				"resta",
+				"app/server/api/RESTAPI.js"
+			],
+			[
+				"modelc",
+				"app/server/common/models/ModelCache.js"
+			],
+			[
+				"modelsto",
+				"app/client/models/ModelStorage.js"
+			],
+			[
+				"accountsa",
+				"app/server/api/AccountsAPI.js"
+			],
+			[
+				"pare",
+				"app/client/tests/ParentTestRunner.js"
+			],
+			[
+				"childtest",
+				"app/client/tests/ChildTestRunner.js"
+			],
+			[
+				"toolbo",
+				"app/server/common/tests/toolbox.js"
+			],
+			[
+				"testingapi",
+				"app/server/api/TestingAPI.js"
+			],
+			[
+				"toobox",
+				"app/client/tests/toolbox.js"
+			],
+			[
+				"exportview",
+				"app/client/views/base/ExportViewModel.js"
+			],
+			[
+				"jasmineexten",
+				"app/client/lib/vendor/bower_components/knockout-switch-case/spec/lib/jasmine.extensions.js"
+			],
+			[
+				"jasminee",
+				"app/client/lib/vendor/bower_components/knockout-switch-case/spec/lib/jasmine.extensions.js"
+			],
+			[
+				"jasmine",
+				"devops/node_modules/less/.grunt/grunt-contrib-jasmine/jasmine.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 263.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

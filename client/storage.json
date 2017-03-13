@@ -1,0 +1,27 @@
+[
+      {
+          "Profile": {
+              "givenName": "Richard",
+              "familyName": "Mack",
+              "icon": "http://www.freeiconspng.com/uploads/male-icon-15.png"
+          },
+          "Spots": [
+            {
+              "count" : 1,
+              "posx" : 100,
+              "posy" : 100
+            },
+            {
+              "count" : 2,
+              "posx" : 150,
+              "posy" : 150
+            }
+          ]
+      },
+      {
+          "Profile": {
+          "givenName": "Tina",
+              "familyName": "Lee"
+          },
+      }
+    ]

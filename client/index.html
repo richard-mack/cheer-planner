@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cheer Planner</title>
+</head>
+
+<body id="Cheerleaders" ng-app="Cheerleaders" ng-controller="cheerleadersController" ng-keydown="listenKeys($event)">
+  <button ng-click="newRoutine = 'New Routine'" 
+    ng-style="{
+      position : 'absolute',
+      top:{{topLeft.top - 20}}, 
+      left:{{topLeft.left}},
+      height : 20
+    }">
+    Switch Routines
+  </button>
+
+  <div id="title" ng-model="routine" style="text-align : center; position: absolute; left : 50%; top : 0%; font-size:24px">
+    {{routine.routineName}}
+  </div>
+
+<!-- This is the creation of the floor -->
+  <div ng-repeat="n in [0,1,2,3,4,5,6,7,8]"
+    id="mat{{n}}"
+    style="position: absolute; border: solid 1px; border-collapse: collapse; margin: 0px;"
+    ng-style="{ top : {{topLeft.top}}, 
+      left : {{n*(matWidth+1)+topLeft.left}},
+      height : {{matHeight}},
+      width : {{matWidth}}
+    }">
+  </div>
+
+<!-- Place the athletes on the floor -->
+  <div ng-repeat="(id, athlete) in athletePojo" 
+    ng-style="{'position': 'absolute', 'left' : lastKnownCount(id).posx+'px', 'top' : lastKnownCount(id).posy+'px', 'z-index' : 0}"
+    add-draggable
+    name="draggable"
+    id={{id}}
+    title={{lastKnownCount(id).note}}>
+    {{athlete.firstName}}
+  </div>
+
+<!-- Counts Input -->
+  <div ng-style="{
+      position : 'absolute',
+      left: 50,
+      top : {{matHeight}} + 100
+    }">
+    Jump to Count: <input id="countInput" ng-keypress="countInputKeypress($event)">
+  </div>
+
+
+<!-- Displays the current counts both in terms of 8 count : count, and the raw count) -->
+  <div ng-style="{
+    'position' : 'absolute',
+    left : {{topLeft.left}},
+    top : {{topLeft.top}} + {{matHeight}} + 10,
+    height : 20,
+    'font-size' : 24}">
+    Count - 
+    <label ng-bind="Math.floor(currentCount / 8)" title="This is the number of the 8 count"></label> : 
+    <label ng-bind="currentCount % 8"></label> 
+    (<label ng-bind="currentCount" ></label>)
+  </div>
+  <!-- Arrows for incrementing/decrementing the counts -->
+    <div style="position: absolute; top: 717px; left: 129px;">
+      <input type="image" src="./up.png" ng-click="jumpToCount(currentCount + 8)" style="height: 10px; width: 10px;">
+    </div>
+    <div style="position: absolute; top: 747px; left: 129px;">
+      <input type="image" src="./down.png" ng-click="jumpToCount(currentCount - 8)" style="height: 10px; width: 10px;">
+    </div>
+    <div style="position: absolute; top: 717px; left: 160px;">
+      <input type="image" src="./up.png" ng-click="jumpToCount(currentCount + 1)" style="height: 10px; width: 10px;">
+    </div>
+    <div style="position: absolute; top: 747px; left: 160px;">
+      <input type="image" src="./down.png" ng-click="jumpToCount(currentCount - 1)" style="height: 10px; width: 10px;">
+    </div>
+
+
+<!-- Displays the note/title for the current count -->
+  <div ng-style="{
+        'position' : 'absolute',
+        left : {{topLeft.left}} + ({{matWidth}}+1)*3,
+        top : {{topLeft.top}} + {{matHeight}}+2,}">
+    <input id="countNoteInput" ng-style="{
+      'text-align' : 'center',
+      width: 300,
+      'font-size' : 24,
+      height: 24,
+      'border-style' : 'none',
+      padding: 0,
+      margin : 0
+    }"
+    ng-value="lastKnownCount('note').note"
+    ng-keyup="updateCountNote($event)">
+  </div>
+
+  <div style="top: 50px"
+  ng-style="{
+    left : {{9*(matWidth+1)+topLeft.left + 15}},
+    'position' : 'absolute'
+    }">
+    Unused Athletes:
+  </div>
+  <button ng-click="addingAthlete = {id : createID({prefix : 'A'})}" style="position: absolute; left: 1090px; top:30px;">Add Athlete</button>
+  <button id="saveButton" ng-click="save()" style="position: absolute; left: 1280px;">Save</button>
+  <div id="delete" ng-style="{
+    position : 'absolute',
+    top : deleteRegion.top,
+    left : deleteRegion.left,
+    width : 50,
+    height : 50
+    }">
+    <img src="./trash.png" style="width: 50px; height: 50px;">
+  </div>
+<!-- Begin single athlete display -->
+  <div ng-show="viewingCount || addingAthlete || newRoutine" style="height: 100%; width: 100%; background-color: grey; opacity:0.1; z-index:1; position: absolute; top:0px; left: 0px;">
+  </div>
+  <div ng-show="viewingCount" style="z-index:2; height: 50%; width:50%; left: 25%; top: 25%; position: absolute; background-color: white; border: 1px solid black;">
+    <div style="position: relative; height: 10%; background-color: darkgrey; font-size: 36px; border-bottom: 1px solid black; text-align: center;"> Athlete Information </div>
+    First name: <input ng-model="viewingCountData.firstName"><br />
+    Last Name: <input ng-model="viewingCountData.lastName"><br />
+    <label style="font-size: 18px">Count Information</label><br />
+    Loaded from: {{viewingCountData.count}} <br />
+    Count note: <input ng-model="viewingCountData.note">
+    <button style="position: absolute; bottom: 0%; right: 0%; height: 15%; width: 15%" ng-click="viewingCount = false">Cancel</button>
+    <button style="position: absolute; bottom: 0%; left: 0%; height: 15%; width: 15%" ng-click="saveViewingCount()">Save</button>
+  </div>
+<!-- Horizontal and Vertical guide lines -->
+  <div id="horizontalDrag" style="position: absolute; width : 100%; border-bottom: dotted 1px; height: 1px;"></div>
+  <div id="verticalDrag" style="position: absolute; height : 100%; border-left: dotted 1px; width: 1px;"></div>
+
+<!-- Add Athlete Prompt -->
+  <div ng-show="addingAthlete" style="z-index:2; height: 50%; width: 50%; left: 25%; top: 25%; position: absolute; background-color: white; border: 1px solid black;">
+    <div style="position: relative; height: 10%; background-color: darkgrey; font-size: 36px; border-bottom: 1px solid black; text-align: center;">New Athlete</div>
+    <label> ID: {{addingAthlete.id}}</label> <br />
+    First name: <input ng-model="addingAthlete.firstName"><br />
+    Last Name: <input ng-model="addingAthlete.lastName"><br />
+    <button style="position: absolute; bottom: 0%; height: 15%; width: 15%" ng-click="addAthlete()"> Save </button>
+    <button style="position: absolute; bottom: 0%; height: 15%; width: 15%; right: 0%;" ng-click="addingAthlete = null"> Cancel </button>
+  </div>
+
+<!-- New Routine Prompt -->
+  <div ng-show="newRoutine" style="z-index:2; height: 50%; width: 50%; left: 25%; top: 25%; position: absolute; background-color: white; border: 1px solid black;">
+    <div style="position: relative; height: 10%; background-color: darkgrey; font-size: 36px; border-bottom: 1px solid black; text-align: center;">New Routine</div>
+    Name of Routine: <input ng-model="newRoutine"><br />
+    <button style="position: absolute; bottom: 0%; height: 15%; width: 15%" ng-click="addRoutine()"> Save </button>
+    <button style="position: absolute; bottom: 0%; height: 15%; width: 15%; right: 0%;" ng-click="newRoutine = ''"> Cancel </button>
+  </div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="./bower_components/angular/angular.js"></script>
+<script src="./bower_components/angular-route/angular-route.js"></script>
+<script src="./app.js"></script>
+<script src="./services.js"></script>
+<script src="./controllers.js"></script>
+<script src="./storage.json"></script>
+<script>
+  var makeDraggable = function() {
+    $( "[name~=draggable]" ).draggable({
+      stop : stopDragging,
+      start : function () {
+        $('#horizontalDrag').show();
+        $('#verticalDrag').show();
+        $('#coordinateBox').show();
+      },
+      drag : function (event, ui) {
+        var leftCenter = ui.position.left + ui.helper.width() / 2
+        var topCenter = ui.position.top + ui.helper.height() / 2
+        $('#horizontalDrag').css({'top' : topCenter});
+        $('#verticalDrag').css({'left' : leftCenter});
+      }
+    });
+  }
+
+  var stopDragging = function (event, ui) {
+    $('#horizontalDrag').hide();
+    $('#verticalDrag').hide();
+    $('#coordinateBox').hide();
+    event.stopPropagation();
+    var $scope = angular.element('#Cheerleaders').scope();
+    updatePosition($scope.currentCount, ui.helper[0].id, ui.position.left, ui.position.top);
+
+  }
+
+  $(document).ready(function () {
+    makeDraggable();
+    $('#horizontalDrag').hide();
+    $('#verticalDrag').hide();
+    $('#coordinateBox').hide();
+  });
+  var clicked = function (event) {
+    console.log(event);
+  };
+  var updatePosition = function (count, athleteID, posx, posy) {
+    var $scope = angular.element('#Cheerleaders').scope();
+    // First, check if it was deleted
+    if ($scope.deleteRegion.left < posx && posx < $scope.deleteRegion.left + 50 && $scope.deleteRegion.top < posy && posy < $scope.deleteRegion.top + 50) {
+      $scope.deleteAthlete(athleteID);
+      $scope.$apply();
+      return;
+    }
+    // Check that is it a valid place to put the person and a valid count. If not, revert to the last place it was.
+    if (count == 0 || 
+      posx < $scope.topLeft.left || 
+      posy < $scope.topLeft.top || 
+      posx > ($scope.topLeft.left+9*($scope.matWidth+1)) || 
+      posy > $scope.matHeight + $scope.topLeft.top) {
+      $( "#"+athleteID ).css('left', $scope.lastKnownCount(athleteID).posx).css('top', $scope.lastKnownCount(athleteID).posy);
+    return;
+  }
+
+    // Check that the count exists at all
+    if (!$scope.currentCounts[count])
+      $scope.currentCounts[count] = [];
+    // If it doesn't exist, add the athlete right away (cause clearly it won't exist.)
+    // Check that the athlete has an object at that count
+    var countToModify = $scope.currentCounts[count].find(function (c) { return (c.athleteID == athleteID)});
+    if (!countToModify) {
+      var newLength = $scope.currentCounts[count].push(
+      {
+        athleteID : athleteID, 
+        note : 'Added Automatically', 
+        id : athleteID + count + $scope.routine.id, 
+        routineID : $scope.routine.id,
+        count : count
+      });
+      countToModify = $scope.currentCounts[count][newLength - 1];
+    }
+
+    // Now change the position 
+
+    countToModify.posx = posx;
+    countToModify.posy = posy;
+    $scope.$apply();
+  };
+</script>
+</body>
+</html>
