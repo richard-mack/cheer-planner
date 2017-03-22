@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title> Login </title>
+</head>
+<body ng-app="Cheerleaders" ng-controller="loginController">
+Username: <input ng-model="username"><br />
+Password: <input ng-model="password"><br />
+<button ng-click="login()">Submit</button>
+<label style="color: red">{{errorMessage}}</label>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="./bower_components/angular/angular.js"></script>
+<script src="./bower_components/angular-route/angular-route.js"></script>
+<script src="app.js"></script>
+<script src="services.js"></script>
+<script src="controllers.js"></script>
+<script src="storage.json"></script>
+</body>
+</html>

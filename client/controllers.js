@@ -1,10 +1,8 @@
 'use strict';
-angular.module('Cheerleaders.controllers', []).
-controller('cheerleadersController', function($scope, $http, $location, $timeout) {
+angular.module('Cheerleaders').
+controller('routineController', ['$scope', '$http', '$location', '$timeout', 'AuthService', '$routeParams', function($scope, $http, $location, $timeout, AuthService, $routeParams) {
   // Declare a bunch of stuff which needs to be initialized.
-  $scope.routine = {};
-  $scope.athletePojo = {};
-  $scope.currentCounts = [];
+  $scope.routine; $scope.athletes; $scope.athletePositions; $scope.currentCountNote;
   $scope.hashtagMapping = {};
   $scope.topLeft = {left : 50, top : 50};
   $scope.matWidth = 100;
@@ -16,28 +14,37 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
   $scope.addingAthlete = false;
   $scope.newRoutine = false;
   $scope.viewingCountData = null;
+  $scope.isDragging = null;
+  $scope.isSaving = false;
+  $
   // Load the routine data from the server. Populate the hashtag map
-  $http.get('api/routines/'+$location.absUrl().split('?',2)[1]).
-  success(function (data, status, headers, config) {
-    $scope.routine = data.routineObj;
-    data.athleteArray.map(function (athlete) {
-      $scope.athletePojo[athlete.id] = athlete;
-    });
-    data.countArray.map(function (count) {
-        // ensure that $scope.currentCount is an array of arrays.
-        if (!$scope.currentCounts[count.count])
-          $scope.currentCounts[count.count] = [];
-        $scope.currentCounts[count.count].push(count);
-      });
-    $scope.currentCounts.map(function (counts) {
-      counts.map(function (count) {
-        $scope.updateHashtags(count);
-      });
-    });
-    $timeout(makeDraggable);
-  });
+  
 
   $scope.currentCount = 0;
+
+  $scope.goHome = function () {
+    $scope.save();
+    $location.path('/');
+  }
+
+  $scope.getRoutineData = function () {
+    $scope.routine = $scope.hashtagMapping = {};
+    $scope.deletedAthletes = [];
+    $http({
+      method : 'GET',
+      url : 'api/Routine/'+$routeParams.id
+    }).success(function (data, status, headers, config) {
+      $scope.routine = data.routine;
+      $scope.athletes = data.athletes;
+      $scope.athletePositions = $scope.getAthletePositions();
+      return; 
+    }).catch(function (err)
+    {
+      console.log(err);
+    });
+  }
+
+  $scope.getRoutineData();
   /**
    * Creates a 32 character ID
    * @param {Object} options This that we may want as settings at some point
@@ -62,19 +69,38 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
    *                              returns null only in the case that the athlete does not exist
    */
   $scope.lastKnownCount = function (athleteID) {
-    var tempCount = $scope.currentCount;
-    while (tempCount >= 0) {
-      if (!$scope.currentCounts[tempCount])
-        $scope.currentCounts[tempCount] = [];
-      var t = $scope.currentCounts[tempCount].find(function (c) { return (c.athleteID == athleteID)});
-      if (t)
-      {
-        return t;
-        tempCount = -1;
+    // Early exit if routine not loaded
+    if (!$scope.routine || !$scope.routine.counts)
+      return;
+
+    var maxCount = {count : -1};
+    $scope.routine.counts.forEach(function (count) {
+      if (count.athleteID == athleteID && count.count >= maxCount.count && count.count <= $scope.currentCount)
+        maxCount = count;
+    });
+    return maxCount;
+  }
+  $scope.getAthletePositions = function () {
+    // Early exit if routine hasn't loaded yet
+    if (!$scope.routine || !$scope.athletes)
+      return; 
+    var returnArray = [];
+    var unusedHeight = 15;
+    var unusedCount = 0;
+    var athleteList = $scope.athletes.sort(function (a,b) {return a.name > b.name});
+    // The athlete list is now sorted alphabetically. This is a bit important
+    athleteList.forEach(function (athlete) {
+      var lastKnown = $scope.lastKnownCount(athlete.id);
+
+      if (lastKnown.count == 0) {
+        lastKnown.posx = 1090;
+        lastKnown.posy = 65 + unusedHeight*unusedCount;
+        unusedCount++;
       }
-      tempCount--;
-    }
-    return;
+
+      returnArray.push({athlete : athlete, count : lastKnown});
+    });
+    return returnArray;
   }
 
   /**
@@ -85,23 +111,27 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
     if (!this.addingAthlete.firstName)
       return;
       // Check to see that there are any counts. If not, that may be an issue
-    if (!$scope.currentCounts[0])
-      $scope.currentCounts[0] = []
+    if (!$scope.routine.counts[0])
+      $scope.routine.counts = []
 
-    var posy = Math.max.apply(Math, $scope.currentCounts[0].map(function (c) {return c.posy ? c.posy : 0}).concat([65])) + 15;
+    var posy = Math.max.apply(Math, $scope.counts.filter(function (c) {return c.count == 0}).map(function (c) {return c.posy ? c.posy : 0}).concat([65])) + 15;
 
-    $scope.currentCounts[0].push({
-      id : this.createID({prefix : 'C'}), 
+    $scope.routine.counts.push({
       athleteID : this.addingAthlete.id, 
       posx : 1090, 
       posy : posy, 
       note : 'Unused Spot',
       count : 0
     });
-    $scope.athletePojo[this.addingAthlete.id] = this.addingAthlete;
+    $scope.athletes.push({
+      firstName : this.addingAthlete.firstName,
+      lastName : this.addingAthlete.lastName,
+      name : this.addingAthlete.firstName + ' ' + this.addingAthlete.lastName,
+      id : this.addingAthlete.id,
+      skills : this.addingAthlete.skills,
+      position : this.addingAthlete.position
+    });
     this.addingAthlete = null;
-    // Add draggable to the new one. This is overkill, but frankly the client app is fast enough right now.
-    $timeout(makeDraggable());
     return;
   }
 
@@ -111,11 +141,8 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
    */
   $scope.deleteAthlete = function (athleteID) {
     // Delete from local storage
-    delete this.athletePojo[athleteID];
-    for (var c = 0; c < this.currentCounts.length; c++) {
-      if (this.currentCounts[c])
-        this.currentCounts[c] = this.currentCounts[c].filter(function (count) {return count.athleteID != athleteID});
-    }
+    $scope.athletes = $scope.routine.athletes.filter(function (athlete) {return athlete.id != athleteID});
+    $scope.routine.counts = $scope.routine.counts.filter(function (count) {return count.athleteID != athleteID});
     // Tag for deletion on save.
     $scope.deletedAthletes.push(athleteID);
   }
@@ -127,7 +154,9 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
     if (!this.newRoutine)
       return;
     $scope.save(); // Save the one you are at right now
-    window.location.search = '?'+this.newRoutine;
+    $location.url(this.newRoutine)
+    $scope.getRoutineData()
+    this.newRoutine = '';
   }
 
   /**
@@ -136,28 +165,82 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
    * COULDDO: Make it have a reasonable return value if save fails
    */
   $scope.save = function () {
-    $('#saveButton').prop('disabled', true);
-    $http({
-      method : 'post',
-      url : 'api/save',
-      headers : {'Content-Type' : 'application/x-www-form-urlencoded'},
-      data : $.param({
-        routine : $scope.routine,
-        //routine : {routineName : "test", id:"testroutine"},
-        athletes : Object.keys($scope.athletePojo).map(function (key) {return $scope.athletePojo[key]}),
-        //athletes : [{firstName : "Richard", lastName: "Mack", id : "1"},{firstName : "aaaaaaasdf", lastName: "jkl", id:"2"}],
-        counts : $scope.currentCounts.reduce(function (acc, val) {
-          return acc.concat(val);
-        }, []),
-        deletedAthletes : $scope.deletedAthletes
-        //counts : [{athleteID:"1",posx:1090,posy:65,count:0, id : "10"},{athleteID:"2",posx:1090,posy:80,count:0, id : "20"}]
-      })
-    }).success(function (data, status, headers, config) {return true;}).finally(function () {
-      $('#saveButton').prop('disabled',false);
-      return true;
+    $scope.isSaving = true;
+    // We need to make sure our data is all in the right format.
+    $scope.athletes.forEach(function (athlete) {
+      athlete.name = athlete.firstName + ' ' + athlete.lastName;
+      if (!athlete.id)
+        athlete.id = $scope.createID({prefix : 'A'});
+      delete athlete._id; // Mongo internal field
+      delete athlete.__v; // Mongo internal field
     });
+
+    delete $scope.routine._id;
+    delete $scope.routine.__v;
+
+    return Promise.all([
+        $http({
+      method : 'POST',
+      url : 'api/Athlete/',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      data : {data : $scope.athletes},
+    }).success(function (data, status, headers, config) {console.log(data); return true;}),
+        $http({
+          method: 'POST',
+          url : 'api/Routine/',
+          headers : {
+            'Content-Type' : 'application/json'
+          },
+          data : {data : $scope.routine},
+        }).success(function (data) {$scope.isSaving = false; return true;})
+    ]);
   }
 
+  $scope.startDragging = function () {
+    $scope.isDragging = {left : 0, top : 0};
+    $scope.$apply();
+  }
+
+  $scope.stopDragging = function ($event, $ui) {
+    var id = $ui.helper[0].id;
+    $scope.isDragging = null;
+    var posx = $ui.helper[0].offsetLeft;
+    var posy = $ui.helper[0].offsetTop;
+
+    // First, check if it is a valid place to put the item.
+    if (!($scope.currentCount == 0 ||
+      posx < $scope.topLeft.left || 
+      posy < $scope.topLeft.top || 
+      posx > ($scope.topLeft.left+9*($scope.matWidth+1)) || 
+      posy > $scope.matHeight + $scope.topLeft.top)) {
+
+
+      var lastKnownCountForId = $scope.lastKnownCount(id);
+    if (lastKnownCountForId.count != $scope.currentCount) {
+      $scope.routine.counts.push({
+        count : $scope.currentCount,
+        athleteID : id,
+        note : '',
+        posx : posx,
+        posy : posy
+      });
+    }
+    else {
+      lastKnownCountForId.posx = posx;
+      lastKnownCountForId.posy = posy;
+    }
+  }
+  $scope.$apply();
+  return;
+}
+
+  $scope.onDrag = function ($event, $ui) {
+    $scope.isDragging.left = $ui.helper[0].offsetLeft + ($ui.helper[0].offsetWidth / 2)  ;
+    $scope.isDragging.top = $ui.helper[0].offsetTop + ($ui.helper[0].offsetHeight / 2);
+    $scope.$apply();
+  }
   /**
    * Sets the count to the one specified by count
    * @param  {[String | Number]} count  If number, a raw count. Also allows [8-count]:[1-count] or hashtag
@@ -190,7 +273,8 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
     }
     // Finally, go to the next count and update the count note
     $scope.currentCount = count;
-    $('#countNoteInput')[0].value = this.lastKnownCount('note').note; // Need to update the value here, since we only want to update it when changing counts
+    $scope.athletePositions = $scope.getAthletePositions();
+    $scope.currentCountNote = this.lastKnownCount('note').note; // Need to update the value here, since we only want to update it when changing counts
   }
 
   /**
@@ -232,18 +316,19 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
       return false;
     }
     // Update the note for that count.
-    var noteToUpdate = this.currentCounts[this.currentCount].find(function (c) {return c.athleteID == 'note'})
+    var noteToUpdate = $scope.routine.counts.find(function (c) {return (c.athleteID == 'note' && c.count == $scope.currentCount)});
     if (!noteToUpdate) {
-      var newLength = this.currentCounts[this.currentCount].push({
+      $scope.routine.counts.push({
         athleteID : 'note',
-        id : 'note' + this.currentCount + this.routine.id,
-        routineID : this.routine.id,
-        count : this.currentCount,
-      });
-      noteToUpdate = this.currentCounts[this.currentCount][newLength - 1];
+        id : $scope.createID({prefix : 'N'}),
+        routineID : $scope.routine.id,
+        count : $scope.currentCount,
+        note : $($event.target)[0].value
+      })
+    } else {
+      noteToUpdate.note = $($event.target)[0].value;
     }
-    var targetElement = $($event.target)[0]
-    noteToUpdate.note = targetElement.value;
+
     // Update hashtags
     // Delete all hashtags on this count
     var hashtagsToDelete = Object.keys(this.hashtagMapping).filter(function (key) {return $scope.hashtagMapping[key] == $scope.currentCount});
@@ -276,16 +361,16 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
 
     switch (charCode) {
       case 38: // Up arrow
-      this.jumpToCount(this.currentCount + 1);
+      this.jumpToCount($scope.currentCount + 1);
       break;
       case 40: // Down Arrow
-      this.jumpToCount(this.currentCount - 1);
+      this.jumpToCount($scope.currentCount - 1);
       break;
       case 39: // Right arrow
-      this.jumpToCount(this.currentCount + 8);
+      this.jumpToCount($scope.currentCount + 8);
       break;
       case 37: // Left arrow
-      this.jumpToCount(this.currentCount - 8);
+      this.jumpToCount($scope.currentCount - 8);
       break;
     }
     return true;
@@ -296,18 +381,22 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
    * @param  {[object]} $event The event provided by the browser on click
    */
   $scope.showCount = function ($event) {
-    var countObj = this.lastKnownCount($($event.target)[0].id);
-    var athleteObj = this.athletePojo[countObj.athleteID];
+    if ($scope.isDragging)
+      return;
+    console.log($scope.isDragging);
+    console.log($event);
+    var athleteID = $event.target.id;
+    var countObj = $scope.lastKnownCount(athleteID);
+    var athleteObj = $scope.athletes.find(function (a) {return a.id == athleteID})
     // We want to make sure that we aren't passing a reference. Changes should save on closing the window, not on the fly.
-    this.viewingCountData = {
+    $scope.viewingCountData = {
       firstName : athleteObj.firstName,
       lastName : athleteObj.lastName,
       athleteID : countObj.athleteID,
       count : countObj.count,
       note : countObj.note
     }
-    this.viewingCount = true;
-    $scope.$apply();
+    $scope.viewingCount = true;
   }
 
   /**
@@ -315,19 +404,19 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
    * on information loaded from a previous count
    */
   $scope.saveViewingCount = function () {
-    var athleteToModify = this.athletePojo[this.viewingCountData.athleteID];
-    var oldCountData = this.lastKnownCount(athleteToModify.id);
-    console.log(athleteToModify);
-    console.log(oldCountData);
-    var countToModify = this.currentCounts[this.currentCount].find(function (c) {return c.athleteID == athleteToModify.id})
+    var athlete = $scope.athletes.find(function (a) {return a.id == $scope.viewingCountData.athleteID});;
+    var oldCountData = $scope.lastKnownCount(athlete.id);
+
+    var countToModify = $scope.routine.counts.find(function (c) {return (c.count == $scope.currentCount && c.athleteID == athlete.id)})
     if (!countToModify) {
-      var newLength = this.currentCounts[this.currentCount].push(oldCountData);
-      countToModify = this.currentCounts[this.currentCount][newLength - 1];
+      var newLength = $scope.routine.counts.push(oldCountData);
+      countToModify = $scope.routine.counts[newLength - 1];
     }
-    countToModify.count = this.currentCount;
-    countToModify.note = this.viewingCountData.note;
-    athleteToModify.firstName = this.viewingCountData.firstName;
-    athleteToModify.lastName = this.viewingCountData.lastName;
+    countToModify.count = $scope.currentCount;
+    countToModify.note = $scope.viewingCountData.note;
+    athlete.firstName = $scope.viewingCountData.firstName;
+    athlete.lastName = $scope.viewingCountData.lastName;
+    athlete.name = athlete.firstName + ' ' + athlete.lastName;
     this.viewingCountData = null;
     this.viewingCount = false;
   }
@@ -351,13 +440,84 @@ controller('cheerleadersController', function($scope, $http, $location, $timeout
   // SHOULDDO: Allow renaming of routines
 
     
-}).directive('addDraggable', function () {
-  return function (scope, element, attrs) {
-    if (scope.$last) {
-      makeDraggable();
-      $("[name~=draggable]").click(function ($event) {
-        var $scope = angular.element('#Cheerleaders').scope();
-        $scope.showCount($event);});
-    } // Despite being in the angular section, this is running with jQuery SHOULDDO: Update to use angular. Figure out angular drag and drop
+}]).controller('routineIndexController', ['$scope', '$location', '$http', 'AuthService', function ($scope, $location, $http, AuthService) {
+  $scope.routines = [];
+  // SHOULDDO: Allow renaming of routines
+  // SHOULDDO: Allow deletion of routines
+
+  $scope.getRoutines = function () {
+    $http({
+      method : 'GET',
+      url : 'api/Routine',
+      headers : {
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      }
+    }).then(function (success){
+      $scope.routines = success.data.map(function (routine) {return {id : decodeURI(routine.id), name : decodeURI(routine.name), lastModified : routine.lastModified}});
+    }).catch(function (err) {console.log(err)})
   }
-});
+
+  $scope.loadRoutine = function (routineID) {
+    $location.path('/routine/'+routineID);
+  }
+}]).controller('registerController', ['$scope', '$location', 'AuthService',
+  function ($scope, $location, AuthService) {
+    $scope.username = $scope.password = '';
+
+    $scope.register = function () {
+
+      // initial values
+      $scope.error = false;
+      $scope.disabled = true;
+
+      // call register from service
+      AuthService.register($scope.username, $scope.password)
+        // handle success
+        .then(function () {
+          console.log('success');
+          $location.path('/login');
+          $scope.disabled = false;
+          $scope.username = $scope.password = '';
+        })
+        // handle error
+        .catch(function (err) {
+          $scope.errorMessage = "Something went wrong!";
+          $scope.disabled = false;
+          $scope.username = $scope.password = '';
+          console.log(err);
+        });
+
+    };
+}]).controller('loginController', ['$scope', '$location', 'AuthService', function ($scope, $location, AuthService) {
+  $scope.username = '';
+  $scope.password = '';
+  $scope.disabled = true;
+  $scope.login = function () {
+    $scope.errorMessage = '';
+
+    AuthService.login($scope.username, $scope.password)
+    .then(function () {
+      $location.path('/');
+      $scope.disabled = false;
+      $scope.username = $scope.password = '';
+    })
+    .catch(function () {
+      $scope.errorMessage = "Invalid Username and/or Password";
+      $scope.disabled = false; 
+      $scope.username = $scope.password = '';
+    });
+  }
+}]).controller('logoutController', ['$scope', '$location', 'AuthService',
+  function ($scope, $location, AuthService) {
+
+    $scope.logout = function () {
+
+      // call logout from service
+      AuthService.logout()
+        .then(function () {
+          $location.path('/login');
+        });
+
+    };
+
+}])

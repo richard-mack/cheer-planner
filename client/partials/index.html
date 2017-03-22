@@ -1,0 +1,10 @@
+<div ng-controller="routineIndexController">
+<label>Routines:</label>
+<div ng-repeat="routine in routines">
+<div ng-click="loadRoutine(routine.id)">{{routine.id}}</div>
+</div>
+<button ng-click="getRoutines()">Load Routines</button>
+</div>
+<div ng-controller="logoutController">
+<button ng-click="logout()">Logout</button>
+</div>  
