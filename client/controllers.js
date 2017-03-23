@@ -15,8 +15,8 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
   $scope.newRoutine = false;
   $scope.viewingCountData = null;
   $scope.isDragging = null;
+  $scope.deleteContextMenu = null;
   $scope.isSaving = false;
-  $
   // Load the routine data from the server. Populate the hashtag map
   
 
@@ -25,6 +25,12 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
   $scope.goHome = function () {
     $scope.save();
     $location.path('/');
+  }
+
+  $scope.getOffsetCount = function (m,n) {
+    var startOfCurrentEightCount = $scope.currentCount - ($scope.currentCount % 8);
+    var startOffset = startOfCurrentEightCount >= 8 ? startOfCurrentEightCount - 8 : 0;
+    return startOffset+8*m + n;
   }
 
   $scope.getRoutineData = function () {
@@ -37,7 +43,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       $scope.routine = data.routine;
       $scope.athletes = data.athletes;
       $scope.athletePositions = $scope.getAthletePositions();
-      return; 
+      $scope.currentCountNote = $scope.getCurrentCountNote();
     }).catch(function (err)
     {
       console.log(err);
@@ -80,6 +86,19 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     });
     return maxCount;
   }
+
+  $scope.getCurrentCountNote = function () {
+    if (!$scope.routine || !$scope.routine.notes)
+      return;
+    var counter = $scope.currentCount;
+    var lastNote;
+    while (!lastNote && counter >= 0) {
+      lastNote = $scope.routine.notes[counter]
+      counter--;
+    }
+    return lastNote;
+  }
+
   $scope.getAthletePositions = function () {
     // Early exit if routine hasn't loaded yet
     if (!$scope.routine || !$scope.athletes)
@@ -135,16 +154,20 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     return;
   }
 
+
   /**
    * Removes the given athlete from the local data and marks it to be deleted from the server
    * @param  {[String]} athleteID The ID of the athlete which is to be delted
    */
   $scope.deleteAthlete = function (athleteID) {
     // Delete from local storage
-    $scope.athletes = $scope.routine.athletes.filter(function (athlete) {return athlete.id != athleteID});
+    $scope.athletes = $scope.athletes.filter(function (athlete) {return athlete.id != athleteID});
     $scope.routine.counts = $scope.routine.counts.filter(function (count) {return count.athleteID != athleteID});
+    $scope.athletePositions = $scope.athletePositions.filter(function (pos) {return pos.athlete.id != athleteID});
     // Tag for deletion on save.
     $scope.deletedAthletes.push(athleteID);
+    // Get rid of the context menu if it is hanging around
+    $scope.deleteContextMenu = null;
   }
 
   /**
@@ -186,7 +209,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
         'Content-Type' : 'application/json'
       },
       data : {data : $scope.athletes},
-    }).success(function (data, status, headers, config) {console.log(data); return true;}),
+    }).success(function (data, status, headers, config) {return true;}),
         $http({
           method: 'POST',
           url : 'api/Routine/',
@@ -274,7 +297,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     // Finally, go to the next count and update the count note
     $scope.currentCount = count;
     $scope.athletePositions = $scope.getAthletePositions();
-    $scope.currentCountNote = this.lastKnownCount('note').note; // Need to update the value here, since we only want to update it when changing counts
+    $scope.currentCountNote = $scope.getCurrentCountNote(); // Need to update the value here, since we only want to update it when changing counts
   }
 
   /**
@@ -294,7 +317,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     if ((charCode >= 48 && charCode <= 58) || (charCode >= 97 && charCode <= 122) || (charCode >= 65 && charCode <= 90))
       return true;
     else {
-      console.log(charCode);
+      //console.log(charCode);
       $event.preventDefault();
       return false;
     }
@@ -316,25 +339,13 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       return false;
     }
     // Update the note for that count.
-    var noteToUpdate = $scope.routine.counts.find(function (c) {return (c.athleteID == 'note' && c.count == $scope.currentCount)});
-    if (!noteToUpdate) {
-      $scope.routine.counts.push({
-        athleteID : 'note',
-        id : $scope.createID({prefix : 'N'}),
-        routineID : $scope.routine.id,
-        count : $scope.currentCount,
-        note : $($event.target)[0].value
-      })
-    } else {
-      noteToUpdate.note = $($event.target)[0].value;
-    }
-
+    $scope.routine.notes[$scope.currentCount] = $event.target.value
     // Update hashtags
     // Delete all hashtags on this count
     var hashtagsToDelete = Object.keys(this.hashtagMapping).filter(function (key) {return $scope.hashtagMapping[key] == $scope.currentCount});
-    console.log(hashtagsToDelete);
+    //console.log(hashtagsToDelete);
     hashtagsToDelete.forEach(function (tag) {delete $scope.hashtagMapping[tag];});
-    this.updateHashtags(noteToUpdate);
+    this.updateHashtags($event.target.value);
     return true;
   }
 
@@ -376,6 +387,19 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     return true;
   }
 
+  $scope.handleCountMouseclick = function ($event) {
+    switch ($event.button) {
+      case 0:
+        $scope.showCount($event);
+        break;
+      case 2:
+        $scope.deleteContextMenu = {};
+        $scope.deleteContextMenu.left = $event.pageX;
+        $scope.deleteContextMenu.top = $event.pageY;
+        $scope.deleteContextMenu.athleteID = $event.target.id;
+        break;
+    }
+  }
   /**
    * Populates the viewingCountData object with information about the specified count and triggers the viewer to show
    * @param  {[object]} $event The event provided by the browser on click
@@ -383,8 +407,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
   $scope.showCount = function ($event) {
     if ($scope.isDragging)
       return;
-    console.log($scope.isDragging);
-    console.log($event);
+    //console.log($event);
     var athleteID = $event.target.id;
     var countObj = $scope.lastKnownCount(athleteID);
     var athleteObj = $scope.athletes.find(function (a) {return a.id == athleteID})
@@ -426,13 +449,13 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
    * @param  {[type]} count [description]
    * @return {[type]}       [description]
    */
-  $scope.updateHashtags = function (count) {
-    var tags = count.note.split('#').slice(1).map(function (t) {return t.trim()});
+  $scope.updateHashtags = function (note) {
+    var tags = note.split('#').slice(1).map(function (t) {return t.trim()});
     for (var i = 0; i < tags.length; i++) {
       if (!this.hashtagMapping.hasOwnProperty(tags[i]))
-        this.hashtagMapping[tags[i]] = count.count;
+        this.hashtagMapping[tags[i]] = $scope.currentCount;
       else
-        throw new Error('Duplicate tags on counts ' + count.count + ' and ' + this.hashtagMapping[tags[i]]);
+        throw new Error('Duplicate tags on counts ' + $scope.currentCount + ' and ' + this.hashtagMapping[tags[i]]);
     }
   }
 
@@ -474,7 +497,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       AuthService.register($scope.username, $scope.password)
         // handle success
         .then(function () {
-          console.log('success');
+          //console.log('success');
           $location.path('/login');
           $scope.disabled = false;
           $scope.username = $scope.password = '';

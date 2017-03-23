@@ -7,7 +7,8 @@ var Routine = new Schema({
     accountID : String,
     counts : [{count : Number, athleteID : String, posx : Number, posy : Number, note : String}],
     athletes : [String],
-    lastModified : Date
+    lastModified : Date,
+    notes : [String],
 });
 
 

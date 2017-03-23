@@ -30,10 +30,10 @@ Cheerleaders.config(function ($routeProvider) {
 });
 
 Cheerleaders.run(function ($rootScope, $location, $route, AuthService) {
-	console.log($rootScope);
-	console.log($location);
-	console.log($route);
-	console.log(AuthService);
+	//console.log($rootScope);
+	//console.log($location);
+	//console.log($route);
+	//console.log(AuthService);
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
       AuthService.getUserStatus()
