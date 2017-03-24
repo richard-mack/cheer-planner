@@ -82,26 +82,28 @@ router.get('/status', function(req, res) {
   });
 });
 
-// MUSTDO: Add auth check as middleware
-router.get('/:type/:id?/', function (req,res) {
+router.get('/:type/:id?/', loggedIn, function (req,res) {
     var include; // Initialize it here
     var model = getModel(req.params.type);
     if (!model)
         return res.status(400).json({error : 'No Models of that type exist'});
 
-    query = {}; // MUSTDO: Add auth restriction here (using user._id and accountID in Mongo)
+    query = {accountID : req.user._id}; // MUSTDO: Add auth restriction here (using user._id and accountID in Mongo)
+    console.log(query);
     if (req.params.id)
-        query = {id : req.params.id}
+        query.id = req.params.id;
     else
         include = {name : 1, id : 1, lastModified : 1};
     
     return model.find(query, include).then(function (result) {
-        if (req.params.type == 'Routine' && req.params.id) { // If getting a specific routine, then grab the Athletes too
+        if (result[0] && req.params.type == 'Routine' && req.params.id) { // If getting a specific routine, then grab the Athletes too
+            //if (!result[0]) // If there is no matching routine
+            //    return res.status(200).json({routine : new Routine({id : req.params.id}), athletes : []});
             var returnObj = {};
             returnObj.routine = result[0];
             return Promise.all(
                 returnObj.routine.athletes.map(function (athleteID) {
-                    return Athlete.findOne({id : athleteID})
+                    return Athlete.findOne({id : athleteID, accountID : req.user._id})
                 }))
             .then(function (arrayOfAthletes) {
                 returnObj.athletes = arrayOfAthletes;
@@ -112,8 +114,7 @@ router.get('/:type/:id?/', function (req,res) {
     }).catch(function (err) {console.log(err);});
 });
 
-// MUSTDO: Add auth check as middleware
-router.post('/:type/', function (req, res) {
+router.post('/:type/', loggedIn, function (req, res) {
     // Check if it is a type we can deal with
     var model = getModel(req.params.type);
 
@@ -138,11 +139,11 @@ router.post('/:type/', function (req, res) {
                     tempModel[propertyName] = modelToSave[propertyName];
             });
             // MUSTDO: Add this back in
-            //tempModel.accountID = req.user._id;
+            tempModel.accountID = req.user._id;
             tempModel.lastModified = new Date();
             // MUSTDO: Add in check on accountID to query
             //console.log('Temp Model: '+JSON.stringify(tempModel));
-            return model.findOneAndUpdate({id : modelToSave.id}, tempModel, {upsert : true, new : true})
+            return model.findOneAndUpdate({id : modelToSave.id, accountID : req.user._id}, tempModel, {upsert : true, new : true})
         })
 
         ).then(function (arrayOfResults) {return res.status(200).json(arrayOfResults);

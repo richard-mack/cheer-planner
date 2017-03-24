@@ -1,7 +1,7 @@
 <div ng-controller="routineIndexController">
 <label>Routines:</label>
 <div ng-repeat="routine in routines">
-<div ng-click="loadRoutine(routine.id)">{{routine.id}}</div>
+<div ng-click="loadRoutine(routine.id)">{{routine.name}}</div>
 </div>
 <button ng-click="getRoutines()">Load Routines</button>
 </div>

@@ -44,6 +44,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       $scope.athletes = data.athletes;
       $scope.athletePositions = $scope.getAthletePositions();
       $scope.currentCountNote = $scope.getCurrentCountNote();
+      $scope.jumpToCount(1);
     }).catch(function (err)
     {
       console.log(err);
@@ -177,9 +178,20 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     if (!this.newRoutine)
       return;
     $scope.save(); // Save the one you are at right now
-    $location.url(this.newRoutine)
-    $scope.getRoutineData()
-    this.newRoutine = '';
+    return $http({
+      method : 'POST',
+      url : 'api/Routine/',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      data : {data : {name : $scope.newRoutine, id : $scope.createID({prefix : 'R'})}}
+    }).success(function (result) {
+      console.log(result);
+      $location.path('/routine/'+result[0].id);
+      //$scope.getRoutineData();
+      //$scope.newRoutine = '';
+      return true;
+    }).catch(function (err) {console.log(err)})
   }
 
   /**
@@ -385,6 +397,12 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       break;
     }
     return true;
+  }
+
+  $scope.listenClick = function ($event) {
+    $scope.deleteContextMenu = null;
+    //console.log($event);
+    return;
   }
 
   $scope.handleCountMouseclick = function ($event) {
