@@ -23,6 +23,10 @@ Cheerleaders.config(function ($routeProvider) {
     	templateUrl: 'partials/routineViewer.html',
     	controller: 'routineController',
     	access: {restricted: true}
+    }).when('/config', {
+      templateUrl : 'partials/config.html',
+      controller: 'routineController',
+      access: {restricted: true}
     })
     .otherwise({
       redirectTo: '/'

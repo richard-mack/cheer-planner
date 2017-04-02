@@ -82,6 +82,30 @@ router.get('/status', function(req, res) {
   });
 });
 
+router.post('/Account/', loggedIn, function (req, res) {
+    console.log('hit it');
+    //var userID = req.user._id;
+    var id = req.user._id;
+    var config = req.body.config;
+    if (!config)
+        return;
+    Account.findOneAndUpdate({_id : id}, {$set : {config : config}}).then(function (result) {
+        return res.status(200).send('Successfully updated config for user ' + result.username);
+    }).catch(function (err) {
+        return res.status(400).json({error : err})
+    });
+});
+
+router.get('/Account/', loggedIn, function (req, res) {
+    var userID = req.user._id;
+    return Account.findOne({_id : userID}).then(function (result) {
+        return res.status(200).json(result.config);
+    }).catch(function (err) {
+        console.log(err);
+        return res.status(400).json({error : err});
+    });
+});
+
 router.get('/:type/:id?/', loggedIn, function (req,res) {
     var include; // Initialize it here
     var model = getModel(req.params.type);
@@ -142,7 +166,7 @@ router.post('/:type/', loggedIn, function (req, res) {
             tempModel.accountID = req.user._id;
             tempModel.lastModified = new Date();
             // MUSTDO: Add in check on accountID to query
-            //console.log('Temp Model: '+JSON.stringify(tempModel));
+            console.log('Temp Model: '+JSON.stringify(tempModel));
             return model.findOneAndUpdate({id : modelToSave.id, accountID : req.user._id}, tempModel, {upsert : true, new : true})
         })
 

@@ -1,0 +1,22 @@
+<div ng-controller="routineController">
+<div ng-repeat="(key,item) in config" 
+	ng-style="{
+		'position' : 'absolute',
+		height : item.height,
+		width : item.width,
+		top : item.top,
+		left : item.left
+	}"
+	data-drag="true"
+    jqyoui-draggable="{onStop : 'stopConfigDragging($event, $ui)'}"
+	style="border: 1px black solid; overflow: hidden;"
+	id="{{key}}">
+	{{key}}
+<div ng-if="item.resizable" id="{{key}}" data-drag="true" jqyoui-draggable="{onDrag : 'resizeConfigDragging($event, $ui)', onStop : 'restoreDragHandle($event, $ui)'}" style="height: 5px; width: 5px; background-color: black; position: absolute; right: 5px; bottom: 5px;"">
+</div>
+<div ng-repeat="(key, property) in item" ng-if="isEditable(item,key)">
+{{key}} : <input ng-if="key != 'enabled'" ng-model="item[key]"> <input ng-if="key == 'enabled'" ng-model="item[key]" type="checkbox">
+</div>
+</div>
+<button ng-click="saveConfig()">Save</button>
+</div>

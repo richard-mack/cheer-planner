@@ -1,57 +1,130 @@
 'use strict';
 angular.module('Cheerleaders').
-controller('routineController', ['$scope', '$http', '$location', '$timeout', 'AuthService', '$routeParams', function($scope, $http, $location, $timeout, AuthService, $routeParams) {
+controller('routineController', ['$scope', '$http', '$location', '$timeout', 'AuthService', '$routeParams', '_', function($scope, $http, $location, $timeout, AuthService, $routeParams, _) {
   // Declare a bunch of stuff which needs to be initialized.
   $scope.routine; $scope.athletes; $scope.athletePositions; $scope.currentCountNote;
-  $scope.hashtagMapping = {};
-  $scope.topLeft = {left : 50, top : 50};
-  $scope.matWidth = 100;
-  $scope.matHeight = $scope.matWidth*20/3
-  $scope.deleteRegion = {left : 1090, top : 50 + $scope.matHeight}
-  $scope.deletedAthletes = [];
+
+  /*
+  Stuff that has to be loaded to have access to it.
+   */
   $scope.Math = Math;
+  $scope._ = _;
+  $scope.Object = Object;
+  /*
+  Configuration for the app
+   */
+  $scope.config = {
+    numericDisplay : {
+      enabled : true,
+      left : 50, 
+      top : 750, 
+      height : 20, 
+      get width() {return this.height*7.5},
+      get resizable() {return true;}
+    },
+    matDisplay : {
+      enabled : true,
+      height : 667,
+      get width() {return this.height * 27/20 + 120},
+      get matHeight() {return $scope.config.matDisplay.height},
+      get matWidth() {return $scope.config.matDisplay.height * 3/20},
+      top : 50,
+      left : 50,
+      get resizable() {return true;},
+    },
+    tableDisplay : {
+      enabled : true,
+      top : 600,
+      left : 700,
+      rowHeight : 20,
+      get numRows() {return Math.floor(this.height / this.rowHeight) - 1} ,
+      width : 330,
+      height: 100,
+      get cellWidth() {return (this.width - this.rowHeight)/8},
+      get resizable() {return true},
+    },
+    noteDisplay : {
+      enabled : true,
+      top : 720,
+      left : 550,
+      height : 20,
+      width : 300,
+      get resizable() {return true},
+    },
+    newRoutineButton : {
+      top : 30,
+      left : 50,
+      height : 20,
+      width : 100,
+      get resizable() {return true},
+    },
+    countsInput : {
+      left : 1000,
+      top : 750,
+      get height() {return 20},
+      get width() {return 160},
+      get resizable() {return false},
+    },
+    saveButton : {
+      top : 20,
+      left : 1280,
+      get height() {return 20},
+      get width() {return 45},
+      get resizable() {return false},
+    },
+    titleDisplay : {
+      enabled : true,
+      top : 0,
+      left : "50%",
+      width : 200,
+      height : 25,
+      fontSize : 24,
+      get resizable() {return true},
+    },
+    logoutButton : {
+      top : 0,
+      left : 0,
+      get height() {return 20},
+      get width() {return 55},
+      get resizable() {return false}
+    },
+    spreadsheetDisplay : {
+      top : 50,
+      left : 50,
+      height : 200,
+      width : 500,
+      enabled : true,
+      columns : [],
+      get defaultColumnWidth() {return 100;},
+      get resizable() {return true},
+    }
+
+  }
+
+  /*
+  Flags
+   */
+  $scope.flags = {
+    isDragging : null,
+    isSaving : false,
+  }
+
+
+  $scope.hashtagMapping = {};
+  $scope.deletedAthletes = [];
   $scope.viewingCount = false;
-  $scope.addingAthlete = false;
+  $scope.addingAthlete = null;
   $scope.newRoutine = false;
   $scope.viewingCountData = null;
   $scope.isDragging = null;
   $scope.deleteContextMenu = null;
   $scope.isSaving = false;
-  // Load the routine data from the server. Populate the hashtag map
-  
-
   $scope.currentCount = 0;
 
-  $scope.goHome = function () {
-    $scope.save();
-    $location.path('/');
-  }
-
-  $scope.getOffsetCount = function (m,n) {
-    var startOfCurrentEightCount = $scope.currentCount - ($scope.currentCount % 8);
-    var startOffset = startOfCurrentEightCount >= 8 ? startOfCurrentEightCount - 8 : 0;
-    return startOffset+8*m + n;
-  }
-
-  $scope.getRoutineData = function () {
-    $scope.routine = $scope.hashtagMapping = {};
-    $scope.deletedAthletes = [];
-    $http({
-      method : 'GET',
-      url : 'api/Routine/'+$routeParams.id
-    }).success(function (data, status, headers, config) {
-      $scope.routine = data.routine;
-      $scope.athletes = data.athletes;
-      $scope.athletePositions = $scope.getAthletePositions();
-      $scope.currentCountNote = $scope.getCurrentCountNote();
-      $scope.jumpToCount(1);
-    }).catch(function (err)
-    {
-      console.log(err);
-    });
-  }
-
-  $scope.getRoutineData();
+  /*
+  Helper functions
+   */
+  
   /**
    * Creates a 32 character ID
    * @param {Object} options This that we may want as settings at some point
@@ -68,23 +141,88 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     return id;
   }
 
+  $scope.isEditable = function (object, property) {
+    var d = Object.getOwnPropertyDescriptor(object, property);
+    return d.writable;
+  }
+
+  $scope.goHome = function () {
+    $scope.save();
+    $location.path('/');
+  }
+
+  $scope.getOffsetCount = function (m,n) { // mth row, nth column
+    var desiredCurrentCountRow = Math.ceil($scope.config.tableDisplay.numRows / 2) - 1; // We want the current 8 count to be in this row
+    var startOfCurrentEightCount = $scope.currentCount - (($scope.currentCount - 1) % 8);
+    if (startOfCurrentEightCount < desiredCurrentCountRow * 8 + 1)
+      desiredCurrentCountRow = (startOfCurrentEightCount - 1) / 8;
+    // We now have desiredCurrentCountRow somewhere between 0 and halfway down the table
+    // startOfCurrentEightCount is the highest number in 1,9,... lower than currentCount
+    var firstCountInTable = startOfCurrentEightCount - desiredCurrentCountRow*8;
+    return firstCountInTable+8*m+(n-1);
+
+
+    //var startOffset = startOfCurrentEightCount >= 9 ? startOfCurrentEightCount - 8 : 1;
+    //return startOffset+8*m + n;
+  }
+
+
+  $scope.getRoutineData = function () {
+    $scope.routine = $scope.hashtagMapping = {};
+    $scope.deletedAthletes = [];
+    $http({
+      method : 'GET',
+      url : 'api/Routine/'+$routeParams.id
+    }).success(function (data, status, headers, config) {
+      $scope.routine = data.routine;
+      $scope.athletes = {};
+      data.athletes.forEach(function (athlete) {
+        $scope.athletes[athlete.id] = athlete;
+      });
+      $scope.athletePositions = $scope.getAthletePositions();
+      $scope.currentCountNote = $scope.getCurrentCountNote();
+      $scope.jumpToCount(1);
+    }).catch(function (err)
+    {
+      console.log(err);
+    });
+  }
+
+  $scope.getConfigData = function () {
+    return $http({
+      method : 'GET',
+      url : 'api/Account/'
+    }).success(function (data) {
+      //console.log(data);
+      _.merge($scope.config, data);
+    }).catch(function (err) {
+      console.log(err);
+    })
+  }
+
+  $scope.getRoutineData();
+  $scope.getConfigData();
+
   /**
    * Takes an athlete id and returns the count object with that athlete id 
    * that has the greatest count that is smaller than the current count
    * @param  {[String]} athleteID A string defining an athlete
-   * @return {[Count | null]}     A count object with that athleteID. If done properly,
+   * @return {[Count]}     A count object with that athleteID. If done properly,
    *                              returns null only in the case that the athlete does not exist
    */
   $scope.lastKnownCount = function (athleteID) {
     // Early exit if routine not loaded
     if (!$scope.routine || !$scope.routine.counts)
       return;
-
-    var maxCount = {count : -1};
-    $scope.routine.counts.forEach(function (count) {
-      if (count.athleteID == athleteID && count.count >= maxCount.count && count.count <= $scope.currentCount)
-        maxCount = count;
-    });
+    var maxCount;
+    var tempCount = $scope.currentCount;
+    while (tempCount >= 0 && !maxCount) {
+      if ($scope.routine.counts[tempCount])
+        maxCount = $scope.routine.counts[tempCount][athleteID]
+      tempCount--;
+    }
+    if (!maxCount) // This is a check if none were found. Returns a pretty much blank object
+      maxCount = {athleteID : athleteID, count : 0};
     return maxCount;
   }
 
@@ -107,14 +245,14 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     var returnArray = [];
     var unusedHeight = 15;
     var unusedCount = 0;
-    var athleteList = $scope.athletes.sort(function (a,b) {return a.name > b.name});
+    var athleteList = Object.values($scope.athletes).sort(function (a,b) {return a.name > b.name});
     // The athlete list is now sorted alphabetically. This is a bit important
     athleteList.forEach(function (athlete) {
       var lastKnown = $scope.lastKnownCount(athlete.id);
 
       if (lastKnown.count == 0) {
-        lastKnown.posx = 1090;
-        lastKnown.posy = 65 + unusedHeight*unusedCount;
+        lastKnown.posx = 1 + 5/($scope.config.matDisplay.matWidth * 9);
+        lastKnown.posy = unusedHeight * (unusedCount+1) / $scope.config.matDisplay.matHeight; // The + 1 is for the title of the section
         unusedCount++;
       }
 
@@ -134,24 +272,20 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     if (!$scope.routine.counts[0])
       $scope.routine.counts = []
 
-    var posy = Math.max.apply(Math, $scope.counts.filter(function (c) {return c.count == 0}).map(function (c) {return c.posy ? c.posy : 0}).concat([65])) + 15;
-
-    $scope.routine.counts.push({
+    $scope.routine.counts[0][this.addingAthlete.id] = {
       athleteID : this.addingAthlete.id, 
-      posx : 1090, 
-      posy : posy, 
-      note : 'Unused Spot',
       count : 0
-    });
-    $scope.athletes.push({
+    };
+    $scope.athletes[this.addingAthlete.id] = {
       firstName : this.addingAthlete.firstName,
       lastName : this.addingAthlete.lastName,
       name : this.addingAthlete.firstName + ' ' + this.addingAthlete.lastName,
       id : this.addingAthlete.id,
       skills : this.addingAthlete.skills,
       position : this.addingAthlete.position
-    });
+    };
     this.addingAthlete = null;
+    $scope.getAthletePositions();
     return;
   }
 
@@ -162,8 +296,9 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
    */
   $scope.deleteAthlete = function (athleteID) {
     // Delete from local storage
-    $scope.athletes = $scope.athletes.filter(function (athlete) {return athlete.id != athleteID});
-    $scope.routine.counts = $scope.routine.counts.filter(function (count) {return count.athleteID != athleteID});
+    delete $scope.athletes[athleteID];
+    $scope.routine.counts.forEach(function (count) {delete count[athleteID]});
+
     $scope.athletePositions = $scope.athletePositions.filter(function (pos) {return pos.athlete.id != athleteID});
     // Tag for deletion on save.
     $scope.deletedAthletes.push(athleteID);
@@ -202,7 +337,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
   $scope.save = function () {
     $scope.isSaving = true;
     // We need to make sure our data is all in the right format.
-    $scope.athletes.forEach(function (athlete) {
+    Object.values($scope.athletes).forEach(function (athlete) {
       athlete.name = athlete.firstName + ' ' + athlete.lastName;
       if (!athlete.id)
         athlete.id = $scope.createID({prefix : 'A'});
@@ -220,7 +355,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       headers : {
         'Content-Type' : 'application/json'
       },
-      data : {data : $scope.athletes},
+      data : {data : Object.values($scope.athletes)},
     }).success(function (data, status, headers, config) {return true;}),
         $http({
           method: 'POST',
@@ -233,46 +368,82 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     ]);
   }
 
+  $scope.saveConfig = function () {
+    return $http({
+      method : 'POST',
+      url : 'api/Account/',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      data : {config : $scope.config}
+    }).success(function(data) {console.log(data)}).catch(function (err) {console.log(err);})
+  }
+
   $scope.startDragging = function () {
     $scope.isDragging = {left : 0, top : 0};
     $scope.$apply();
   }
 
+
   $scope.stopDragging = function ($event, $ui) {
     var id = $ui.helper[0].id;
     $scope.isDragging = null;
-    var posx = $ui.helper[0].offsetLeft;
-    var posy = $ui.helper[0].offsetTop;
+    var rawPosition = {left : $event.target.offsetLeft, top : $event.target.offsetTop};
+    var matPosition = {
+      left : (rawPosition.left - $scope.config.matDisplay.left) / ($scope.config.matDisplay.matWidth * 9),
+      top : (rawPosition.top - $scope.config.matDisplay.top) / $scope.config.matDisplay.matHeight
+    }
 
     // First, check if it is a valid place to put the item.
     if (!($scope.currentCount == 0 ||
-      posx < $scope.topLeft.left || 
-      posy < $scope.topLeft.top || 
-      posx > ($scope.topLeft.left+9*($scope.matWidth+1)) || 
-      posy > $scope.matHeight + $scope.topLeft.top)) {
+      matPosition.left < 0 ||
+      matPosition.left > 1 ||
+      matPosition.top < 0 || 
+      matPosition.top > 1)) {
 
 
       var lastKnownCountForId = $scope.lastKnownCount(id);
     if (lastKnownCountForId.count != $scope.currentCount) {
-      $scope.routine.counts.push({
+      $scope.routine.counts[$scope.currentCount][id] = {
         count : $scope.currentCount,
         athleteID : id,
         note : '',
-        posx : posx,
-        posy : posy
-      });
+        posx : matPosition.left,
+        posy : matPosition.top
+      };
     }
     else {
-      lastKnownCountForId.posx = posx;
-      lastKnownCountForId.posy = posy;
+      lastKnownCountForId.posx = matPosition.left;
+      lastKnownCountForId.posy = matPosition.top;
     }
   }
   $scope.$apply();
   return;
 }
 
+$scope.stopConfigDragging = function ($event, $ui) {
+  var id = $event.target.id;
+  $scope.config[id].left = $event.target.offsetLeft;
+  $scope.config[id].top = $event.target.offsetTop;
+}
+
+$scope.resizeConfigDragging = function ($event, $ui) {
+  var id = $event.target.id;
+  $scope.config[id].height = $event.target.offsetTop + 5;// - $scope.config[id].top + 5;
+  try {
+    $scope.config[id].width = $event.target.offsetLeft + 5
+  } catch (err) {};
+  $event.target.style.left = $scope.config[id].width - 5;
+  $scope.$apply();
+}
+
+$scope.restoreDragHandle = function ($event, $ui) {
+  var id = $event.target.id;
+  $event.target.style.left = $scope.config[id].width-5;;
+}
+
   $scope.onDrag = function ($event, $ui) {
-    $scope.isDragging.left = $ui.helper[0].offsetLeft + ($ui.helper[0].offsetWidth / 2)  ;
+    $scope.isDragging.left = $event.target.offsetLeft + ($event.target.offsetWidth / 2);
     $scope.isDragging.top = $ui.helper[0].offsetTop + ($ui.helper[0].offsetHeight / 2);
     $scope.$apply();
   }
@@ -292,8 +463,8 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       if (parsedCount >= 0) { // If it is a number, then parseInt will get it 
         if (parsedCount > 5000)
           throw new Error('Routines can be at most 5000 counts long');
-        if (parsedCount < 0)
-          parsedCount = 0;
+        if (parsedCount < 1)
+          parsedCount = 1;
       } else { // count is a string. Search through counts for something with this tag
         parsedCount = this.hashtagMapping[count];
         if (!parsedCount)
@@ -308,6 +479,8 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     }
     // Finally, go to the next count and update the count note
     $scope.currentCount = count;
+    if (!$scope.routine.counts[count])
+      $scope.routine.counts[count] = {}; // If the count doesn't exist yet, create it
     $scope.athletePositions = $scope.getAthletePositions();
     $scope.currentCountNote = $scope.getCurrentCountNote(); // Need to update the value here, since we only want to update it when changing counts
   }
@@ -360,6 +533,15 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     this.updateHashtags($event.target.value);
     return true;
   }
+
+   $scope.logout = function () {
+
+      // call logout from service
+      AuthService.logout()
+        .then(function () {
+          $location.path('/login');
+        });
+    }
 
   /**
    * Listens for various keypresses on the main document
@@ -445,13 +627,12 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
    * on information loaded from a previous count
    */
   $scope.saveViewingCount = function () {
-    var athlete = $scope.athletes.find(function (a) {return a.id == $scope.viewingCountData.athleteID});;
+    var athlete = $scope.athletes[$scope.viewingCountData.athleteID];
     var oldCountData = $scope.lastKnownCount(athlete.id);
 
-    var countToModify = $scope.routine.counts.find(function (c) {return (c.count == $scope.currentCount && c.athleteID == athlete.id)})
+    var countToModify = $scope.routine.counts[$scope.currentCount][athlete.id];
     if (!countToModify) {
-      var newLength = $scope.routine.counts.push(oldCountData);
-      countToModify = $scope.routine.counts[newLength - 1];
+      countToModify = oldCountData;
     }
     countToModify.count = $scope.currentCount;
     countToModify.note = $scope.viewingCountData.note;
@@ -497,6 +678,15 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       $scope.routines = success.data.map(function (routine) {return {id : decodeURI(routine.id), name : decodeURI(routine.name), lastModified : routine.lastModified}});
     }).catch(function (err) {console.log(err)})
   }
+
+  $scope.logout = function () {
+
+      // call logout from service
+      AuthService.logout()
+        .then(function () {
+          $location.path('/login');
+        });
+    }
 
   $scope.loadRoutine = function (routineID) {
     $location.path('/routine/'+routineID);
@@ -548,17 +738,4 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       $scope.username = $scope.password = '';
     });
   }
-}]).controller('logoutController', ['$scope', '$location', 'AuthService',
-  function ($scope, $location, AuthService) {
-
-    $scope.logout = function () {
-
-      // call logout from service
-      AuthService.logout()
-        .then(function () {
-          $location.path('/login');
-        });
-
-    };
-
-}])
+}]).constant('_', window._);
