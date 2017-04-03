@@ -4,5 +4,10 @@
 <div ng-click="loadRoutine(routine.id)">{{routine.name}}</div>
 </div>
 <button ng-click="getRoutines()">Load Routines</button>
+<button ng-click="flags.addingRoutine = true">Add New Routine</button>
+<div ng-show="flags.addingRoutine" style="width : 50%; height : 50%; position: absolute; left: 25%; top: 25%;">
+New Routine Name : <input ng-model="newRoutine">
+<button ng-click="addRoutine()">Create Routine</button>
+</div>
 <button ng-click="logout()">Logout</button>
 </div>  

@@ -94,7 +94,6 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       height : 200,
       width : 500,
       enabled : true,
-      columns : [],
       get defaultColumnWidth() {return 100;},
       get resizable() {return true},
     }
@@ -109,9 +108,18 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     isSaving : false,
   }
 
+  /*
+  Defaults
+   */
+  
+  $scope.defaultRoutine = {
+    counts : [],
+    athletes : [],
+    notes : [],
+  }
+
 
   $scope.hashtagMapping = {};
-  $scope.deletedAthletes = [];
   $scope.viewingCount = false;
   $scope.addingAthlete = null;
   $scope.newRoutine = false;
@@ -169,12 +177,11 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
 
   $scope.getRoutineData = function () {
     $scope.routine = $scope.hashtagMapping = {};
-    $scope.deletedAthletes = [];
     $http({
       method : 'GET',
       url : 'api/Routine/'+$routeParams.id
     }).success(function (data, status, headers, config) {
-      $scope.routine = data.routine;
+      $scope.routine = _.merge($scope.defaultRoutine, data.routine);
       $scope.athletes = {};
       data.athletes.forEach(function (athlete) {
         $scope.athletes[athlete.id] = athlete;
@@ -270,7 +277,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       return;
       // Check to see that there are any counts. If not, that may be an issue
     if (!$scope.routine.counts[0])
-      $scope.routine.counts = []
+      $scope.routine.counts[0] = {};
 
     $scope.routine.counts[0][this.addingAthlete.id] = {
       athleteID : this.addingAthlete.id, 
@@ -285,7 +292,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       position : this.addingAthlete.position
     };
     this.addingAthlete = null;
-    $scope.getAthletePositions();
+    $scope.athletePositions = $scope.getAthletePositions();
     return;
   }
 
@@ -300,8 +307,6 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     $scope.routine.counts.forEach(function (count) {delete count[athleteID]});
 
     $scope.athletePositions = $scope.athletePositions.filter(function (pos) {return pos.athlete.id != athleteID});
-    // Tag for deletion on save.
-    $scope.deletedAthletes.push(athleteID);
     // Get rid of the context menu if it is hanging around
     $scope.deleteContextMenu = null;
   }
@@ -344,7 +349,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       delete athlete._id; // Mongo internal field
       delete athlete.__v; // Mongo internal field
     });
-
+    $scope.routine.athletes = Object.keys($scope.athletes);
     delete $scope.routine._id;
     delete $scope.routine.__v;
 
@@ -664,8 +669,19 @@ $scope.restoreDragHandle = function ($event, $ui) {
     
 }]).controller('routineIndexController', ['$scope', '$location', '$http', 'AuthService', function ($scope, $location, $http, AuthService) {
   $scope.routines = [];
+  $scope.newRoutine = '';
   // SHOULDDO: Allow renaming of routines
   // SHOULDDO: Allow deletion of routines
+  $scope.createID = function (options) {
+    var id = "";
+    if (options && options.prefix)
+      id += options.prefix.slice(0,32);
+    id += (new Date()).getTime().toString(36);
+    while (id.length < 32) {
+      id += Math.floor(Math.random()*36).toString(36);
+    }
+    return id;
+  }
 
   $scope.getRoutines = function () {
     $http({
@@ -676,6 +692,22 @@ $scope.restoreDragHandle = function ($event, $ui) {
       }
     }).then(function (success){
       $scope.routines = success.data.map(function (routine) {return {id : decodeURI(routine.id), name : decodeURI(routine.name), lastModified : routine.lastModified}});
+    }).catch(function (err) {console.log(err)})
+  }
+
+  $scope.addRoutine = function () {
+    if (!this.newRoutine)
+      return;
+    return $http({
+      method : 'POST',
+      url : 'api/Routine/',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      data : {data : {name : $scope.newRoutine, id : $scope.createID({prefix : 'R'})}}
+    }).success(function (result) {
+      $location.path('/routine/'+result[0].id);
+      return true;
     }).catch(function (err) {console.log(err)})
   }
 
