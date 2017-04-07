@@ -203,30 +203,30 @@
     left : config.spreadsheetDisplay.left,
     top : config.spreadsheetDisplay.top,
     width : config.spreadsheetDisplay.width,
-    height : config.spreadsheetDisplay.height
+    height : config.spreadsheetDisplay.height,
+    'overflow' : 'scroll'
   }">
   <table style="position: absolute; top : 0px; left: 0px; border-collapse: collapse;">
     <tr><th style="width: 3em;">Count:</th><th ng-style="{
       width : column.width
-    }" ng-repeat="column in config.spreadsheetDisplay.columns"><select ng-options="athlete.id as athlete.name for athlete in athletes" ng-model="config.spreadsheetDisplay.columns[$index].athlete"></select></th>
-  <th ng-click="config.spreadsheetDisplay.columns.push({width : config.spreadsheetDisplay.defaultColumnWidth})">+</th></tr>
+    }" ng-repeat="column in routine.config.spreadsheetDisplayColumns"><select ng-options="athlete.id as athlete.name for athlete in athletes" ng-model="routine.config.spreadsheetDisplayColumns[$index].athlete"></select></th>
+  <th ng-click="routine.config.spreadsheetDisplayColumns.push({width : config.spreadsheetDisplay.defaultColumnWidth})">+</th></tr>
   </table>
-  <table style="position: absolute; top: 1em; left : 0px;">
-  <tr ng-repeat="countNumber in _.range(1,routine.counts.length)"><th style="text-align: right; width: 3em">{{(countNumber - 1) % 8 == 0 ? (countNumber - 1)/8+1 + ':' : ''}}{{countNumber % 8 || 8}}</th><td ng-repeat="column in config.spreadsheetDisplay.columns"></td></tr>
+  <table style="position: absolute; top: 1em;">
+  <tr ng-repeat="countNumber in _.range(1,routine.counts.length)"><th style="text-align: right; width: 3em">{{(countNumber - 1) % 8 == 0 ? (countNumber - 1)/8+1 + ':' : ''}}{{countNumber % 8 || 8}}</th><td ng-repeat="column in routine.config.spreadsheetDisplayColumns"></td></tr>
   </table>
   <table style="position: absolute; top: 1em; left: 3em;">
-  <tr ng-repeat="countNumber in _.range(1, routine.counts.length)"><td ng-repeat="column in config.spreadsheetDisplay.columns" ng-style="{
+  <tr ng-repeat="countNumber in _.range(1, routine.counts.length)" ng-style="{
+    height : 20
+  }">
+  <td ng-repeat="column in routine.config.spreadsheetDisplayColumns" ng-style="{
     width : column.width,
     'text-align' : 'center'
-  }">test</td></tr>
+  }"
+  ng-click="routine.config.spreadsheetDisplayColumns[$index].athlete ? showCount(routine.config.spreadsheetDisplayColumns[$index].athlete, countNumber) : null">
+  <label style="width : 100%;"> {{routine.counts[countNumber][routine.config.spreadsheetDisplayColumns[$index].athlete].note}}</label></td>
+  </tr>
   </table>
-  <!--<table>
-  <tr><th>Count:</th><th ng-repeat="column in config.spreadsheetDisplay.columns"><select ng-options="athlete.id as athlete.name for athlete in athletes" ng-model="config.spreadsheetDisplay.columns[$index]"></select></th>
-  <th ng-click="config.spreadsheetDisplay.columns.push({width : config.spreadsheetDisplay.defaultColumnWidth})">+</th></tr>
-  <tr ng-repeat="countNumber in _.range(1,routine.counts.length)"><th style="text-align: right;">{{(countNumber - 1) % 8 == 0 ? (countNumber - 1)/8+1 + ':' : ''}}{{countNumber % 8 || 8}}</th><td ng-repeat="column in config.spreadsheetDisplay.columns"></td></tr>
-  </table> -->
-
-
 </div>
 
 <!-- Delete Menu -->

@@ -116,6 +116,9 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     counts : [],
     athletes : [],
     notes : [],
+    config : {
+      spreadsheetDisplayColumns : []
+    }
   }
 
 
@@ -595,7 +598,7 @@ $scope.restoreDragHandle = function ($event, $ui) {
   $scope.handleCountMouseclick = function ($event) {
     switch ($event.button) {
       case 0:
-        $scope.showCount($event);
+        $scope.showCount($event.target.id, $scope.currentCount);
         break;
       case 2:
         $scope.deleteContextMenu = {};
@@ -609,13 +612,13 @@ $scope.restoreDragHandle = function ($event, $ui) {
    * Populates the viewingCountData object with information about the specified count and triggers the viewer to show
    * @param  {[object]} $event The event provided by the browser on click
    */
-  $scope.showCount = function ($event) {
+  $scope.showCount = function (athleteID, count) {
     if ($scope.isDragging)
       return;
     //console.log($event);
-    var athleteID = $event.target.id;
+    $scope.jumpToCount(count);
     var countObj = $scope.lastKnownCount(athleteID);
-    var athleteObj = $scope.athletes.find(function (a) {return a.id == athleteID})
+    var athleteObj = $scope.athletes[athleteID]
     // We want to make sure that we aren't passing a reference. Changes should save on closing the window, not on the fly.
     $scope.viewingCountData = {
       firstName : athleteObj.firstName,
@@ -637,7 +640,7 @@ $scope.restoreDragHandle = function ($event, $ui) {
 
     var countToModify = $scope.routine.counts[$scope.currentCount][athlete.id];
     if (!countToModify) {
-      countToModify = oldCountData;
+      countToModify = $scope.routine.counts[$scope.currentCount][athlete.id] = _.clone(oldCountData);
     }
     countToModify.count = $scope.currentCount;
     countToModify.note = $scope.viewingCountData.note;

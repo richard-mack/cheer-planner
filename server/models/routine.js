@@ -9,6 +9,7 @@ var Routine = new Schema({
     athletes : [String],
     lastModified : Date,
     notes : [String],
+    config : Object,
 });
 
 
