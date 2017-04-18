@@ -79,7 +79,7 @@
         margin : 0
       }"
       ng-model="currentCountNote"
-      ng-keyup="updateCountNote($event)">
+      ng-blur="updateCountNote($event)">
     </div>
   </div>
 <!-- Counts Input -->
@@ -197,7 +197,7 @@
   </tr>
   </table>
 
-<!-- Display counts as a spreadsheet MUSTDO: Multiselect lists-->
+<!-- Display counts as a spreadsheet-->
   <div id="spreadsheetDisplay" ng-if="config.spreadsheetDisplay.enabled" ng-style="{
     'position' : 'absolute',
     left : config.spreadsheetDisplay.left,
@@ -206,28 +206,46 @@
     height : config.spreadsheetDisplay.height,
     'overflow' : 'scroll'
   }">
-  <table style="position: absolute; top : 0px; left: 0px; border-collapse: collapse;">
-    <tr><th style="width: 3em;">Count:</th><th ng-style="{
-      width : column.width
-    }" ng-repeat="column in routine.config.spreadsheetDisplayColumns"><select ng-options="athlete.id as athlete.name for athlete in athletes" ng-model="routine.config.spreadsheetDisplayColumns[$index].athlete"></select></th>
-  <th ng-click="routine.config.spreadsheetDisplayColumns.push({width : config.spreadsheetDisplay.defaultColumnWidth})">+</th></tr>
+  <table style="position: relative; border-collapse: collapse;">
+    <tr><th id="spreadsheetDisplayCount" style="position: relative; z-index: 1; background: white;">Count:</th><th 
+    class="spreadsheetDisplayHeaderRow" 
+    ng-style="{
+        width : column.width,
+        'position' : 'relative',
+        'background' : 'white',
+        'border' : 'black solid 1px'
+      }" 
+    ng-repeat="column in routine.config.spreadsheetDisplayColumns">
+      <div style="white-space : normal; width: 100%" class="multiselect" ng-dropdown-multiselect="" options="spreadsheetDisplayAthleteOptions" 
+      selected-model="routine.config.spreadsheetDisplayColumns[$index].athlete"
+      extra-settings="spreadsheetDisplayHeaderSettings"
+      events="spreadsheetDisplayHeaderEvents"
+      ></div>
+
+      </th>
+    <th class="spreadsheetDisplayHeaderRow" style="position: relative; background: white; border: black solid 1px" ng-click="routine.config.spreadsheetDisplayColumns.push({width : config.spreadsheetDisplay.defaultColumnWidth, athlete : []})">+</th></tr>
+    <tr ng-repeat="countNumber in _.range(1, routine.counts.length)" ng-style="{
+      'background' : countNumber == currentCount ? 'lightgreen' : ($even ? 'lightgrey' : 'white'),
+      'border' : 'black solid 1px'
+    }">
+    <th class="spreadsheetCountNumber" style="text-align: right; width: 3em; position: relative; background: white; border: black solid 1px;">{{(countNumber - 1) % 8 == 0 ? (countNumber - 1)/8+1 + ':' : ''}}{{countNumber % 8 || 8}}</th>
+    <td ng-repeat="column in routine.config.spreadsheetDisplayColumns" ng-style="{
+      width : column.width,
+      'text-align' : 'center',
+      'border' : 'black solid 1px'
+    }"
+    ng-click="handleSpreadsheetClick(routine.config.spreadsheetDisplayColumns[$index].athlete, countNumber)"
+    ><input ng-blur="updateNotes(countNumber, $index)" ng-model="spreadsheetDisplay[countNumber][$index]"></td>
+    </tr>
   </table>
-  <table style="position: absolute; top: 1em;">
-  <tr ng-repeat="countNumber in _.range(1,routine.counts.length)"><th style="text-align: right; width: 3em">{{(countNumber - 1) % 8 == 0 ? (countNumber - 1)/8+1 + ':' : ''}}{{countNumber % 8 || 8}}</th><td ng-repeat="column in routine.config.spreadsheetDisplayColumns"></td></tr>
-  </table>
-  <table style="position: absolute; top: 1em; left: 3em;">
-  <tr ng-repeat="countNumber in _.range(1, routine.counts.length)" ng-style="{
-    height : 20
-  }">
-  <td ng-repeat="column in routine.config.spreadsheetDisplayColumns" ng-style="{
-    width : column.width,
-    'text-align' : 'center'
-  }"
-  ng-click="routine.config.spreadsheetDisplayColumns[$index].athlete ? showCount(routine.config.spreadsheetDisplayColumns[$index].athlete, countNumber) : null">
-  <label style="width : 100%;"> {{routine.counts[countNumber][routine.config.spreadsheetDisplayColumns[$index].athlete].note}}</label></td>
-  </tr>
-  </table>
-</div>
+  <script> // Some custom JQuery to handle scrolling on the spreadsheetDisplay nicely.
+  $("#spreadsheetDisplay").scroll(function (event) {
+    $('.spreadsheetDisplayHeaderRow').css('top', event.target.scrollTop);
+    $('.spreadsheetCountNumber').css('left', event.target.scrollLeft);
+    $('#spreadsheetDisplayCount').css('top', event.target.scrollTop).css('left', event.target.scrollLeft);
+  });
+  </script>
+  </div>
 
 <!-- Delete Menu -->
   <div>

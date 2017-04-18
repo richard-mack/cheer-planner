@@ -1,4 +1,4 @@
-var Cheerleaders = angular.module('Cheerleaders', [ 'ngRoute', 'ngDragDrop']);
+var Cheerleaders = angular.module('Cheerleaders', [ 'ngRoute', 'ngDragDrop', 'angularjs-dropdown-multiselect']);
 
 Cheerleaders.config(function ($routeProvider) {
 	$routeProvider.when('/', {

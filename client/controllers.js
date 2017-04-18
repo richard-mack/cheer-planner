@@ -2,7 +2,7 @@
 angular.module('Cheerleaders').
 controller('routineController', ['$scope', '$http', '$location', '$timeout', 'AuthService', '$routeParams', '_', function($scope, $http, $location, $timeout, AuthService, $routeParams, _) {
   // Declare a bunch of stuff which needs to be initialized.
-  $scope.routine; $scope.athletes; $scope.athletePositions; $scope.currentCountNote;
+  $scope.routine; $scope.athletes; $scope.athletePositions; $scope.currentCountNote; $scope.spreadsheetDisplayAthleteOptions;
 
   /*
   Stuff that has to be loaded to have access to it.
@@ -10,6 +10,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
   $scope.Math = Math;
   $scope._ = _;
   $scope.Object = Object;
+  window.s = $scope;
   /*
   Configuration for the app
    */
@@ -94,7 +95,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       height : 200,
       width : 500,
       enabled : true,
-      get defaultColumnWidth() {return 100;},
+      get defaultColumnWidth() {return 150;},
       get resizable() {return true},
     }
 
@@ -118,6 +119,20 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     notes : [],
     config : {
       spreadsheetDisplayColumns : []
+    }
+  }
+  $scope.spreadsheetDisplayHeaderSettings = {
+    smartButtonMaxItems : 36,
+    smartButtonTextConverter : function (itemText, originalItem) {
+      return originalItem.firstName;
+    },
+    smartButtonMultiline : true,
+    buttonClasses : 'dropdown-button',
+    styleActive : true,
+  }
+  $scope.spreadsheetDisplayHeaderEvents = {
+    onClose : function () {
+      $scope.computeSpreadsheet();
     }
   }
 
@@ -183,14 +198,16 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     $http({
       method : 'GET',
       url : 'api/Routine/'+$routeParams.id
-    }).success(function (data, status, headers, config) {
-      $scope.routine = _.merge($scope.defaultRoutine, data.routine);
+    }).then(function (response) {
+      $scope.routine = _.merge($scope.defaultRoutine, response.data.routine);
       $scope.athletes = {};
-      data.athletes.forEach(function (athlete) {
+      response.data.athletes.forEach(function (athlete) {
         $scope.athletes[athlete.id] = athlete;
       });
       $scope.athletePositions = $scope.getAthletePositions();
       $scope.currentCountNote = $scope.getCurrentCountNote();
+      $scope.spreadsheetDisplayAthleteOptions = $scope.getSpreadsheetDisplayAthleteOptions();
+      $scope.computeSpreadsheet();
       $scope.jumpToCount(1);
     }).catch(function (err)
     {
@@ -202,9 +219,9 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     return $http({
       method : 'GET',
       url : 'api/Account/'
-    }).success(function (data) {
+    }).then(function (response) {
       //console.log(data);
-      _.merge($scope.config, data);
+      _.merge($scope.config, response.data);
     }).catch(function (err) {
       console.log(err);
     })
@@ -255,7 +272,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     var returnArray = [];
     var unusedHeight = 15;
     var unusedCount = 0;
-    var athleteList = Object.values($scope.athletes).sort(function (a,b) {return a.name > b.name});
+    var athleteList = Object.values($scope.athletes).sort(function (a,b) {return a.firstName > b.firstName});
     // The athlete list is now sorted alphabetically. This is a bit important
     athleteList.forEach(function (athlete) {
       var lastKnown = $scope.lastKnownCount(athlete.id);
@@ -269,6 +286,10 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
       returnArray.push({athlete : athlete, count : lastKnown});
     });
     return returnArray;
+  }
+
+  $scope.getSpreadsheetDisplayAthleteOptions = function () {
+    return _.map($scope.athletes, function (athlete) {return {id : athlete.id, label : athlete.name, firstName : athlete.firstName}});
   }
 
   /**
@@ -296,6 +317,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
     };
     this.addingAthlete = null;
     $scope.athletePositions = $scope.getAthletePositions();
+    $scope.spreadsheetDisplayAthleteOptions = $scope.getSpreadsheetDisplayAthleteOptions();
     return;
   }
 
@@ -307,9 +329,10 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
   $scope.deleteAthlete = function (athleteID) {
     // Delete from local storage
     delete $scope.athletes[athleteID];
-    $scope.routine.counts.forEach(function (count) {delete count[athleteID]});
+    $scope.routine.counts.forEach(function (count) {count ? delete count[athleteID] : null});
 
     $scope.athletePositions = $scope.athletePositions.filter(function (pos) {return pos.athlete.id != athleteID});
+    $scope.spreadsheetDisplayAthleteOptions = $scope.spreadsheetDisplayAthleteOptions.filter(function (athlete) {return athlete.id != athleteID});
     // Get rid of the context menu if it is hanging around
     $scope.deleteContextMenu = null;
   }
@@ -328,7 +351,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
         'Content-Type' : 'application/json'
       },
       data : {data : {name : $scope.newRoutine, id : $scope.createID({prefix : 'R'})}}
-    }).success(function (result) {
+    }).then(function (result) {
       console.log(result);
       $location.path('/routine/'+result[0].id);
       //$scope.getRoutineData();
@@ -364,7 +387,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
         'Content-Type' : 'application/json'
       },
       data : {data : Object.values($scope.athletes)},
-    }).success(function (data, status, headers, config) {return true;}),
+    }).then(function (data, status, headers, config) {return true;}),
         $http({
           method: 'POST',
           url : 'api/Routine/',
@@ -372,7 +395,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
             'Content-Type' : 'application/json'
           },
           data : {data : $scope.routine},
-        }).success(function (data) {$scope.isSaving = false; return true;})
+        }).then(function (data) {$scope.isSaving = false; return true;})
     ]);
   }
 
@@ -384,7 +407,7 @@ controller('routineController', ['$scope', '$http', '$location', '$timeout', 'Au
         'Content-Type' : 'application/json'
       },
       data : {config : $scope.config}
-    }).success(function(data) {console.log(data)}).catch(function (err) {console.log(err);})
+    }).then(function(data) {console.log(data)}).catch(function (err) {console.log(err);})
   }
 
   $scope.startDragging = function () {
@@ -524,15 +547,8 @@ $scope.restoreDragHandle = function ($event, $ui) {
    * @return {[boolean]}        True if the character added is acceptable, false if not
    */
   $scope.updateCountNote = function ($event) {
-    // Early exit if not a reasonable character
-    var charCode = (typeof $event.which == 'number') ? $event.which : $event.keyCode;
-    if (charCode < 32 || charCode > 126)
-    {
-      $event.preventDefault()
-      return false;
-    }
-    // Update the note for that count.
-    $scope.routine.notes[$scope.currentCount] = $event.target.value
+    console.log($event);
+    $scope.routine.notes[$scope.currentCount] = $event.target.value;
     // Update hashtags
     // Delete all hashtags on this count
     var hashtagsToDelete = Object.keys(this.hashtagMapping).filter(function (key) {return $scope.hashtagMapping[key] == $scope.currentCount});
@@ -608,6 +624,14 @@ $scope.restoreDragHandle = function ($event, $ui) {
         break;
     }
   }
+
+  $scope.handleSpreadsheetClick = function (athleteID, countNumber) {
+    $scope.jumpToCount(countNumber);
+    return; // For now, do just this until I figure out what should happen here
+    if (!athleteID)
+      return;
+    $scope.showCount(athleteID, countNumber);
+  }
   /**
    * Populates the viewingCountData object with information about the specified count and triggers the viewer to show
    * @param  {[object]} $event The event provided by the browser on click
@@ -649,6 +673,7 @@ $scope.restoreDragHandle = function ($event, $ui) {
     athlete.name = athlete.firstName + ' ' + athlete.lastName;
     this.viewingCountData = null;
     this.viewingCount = false;
+    $scope.computeSpreadsheet({counts : [$scope.currentCount]});
   }
 
   /**
@@ -664,6 +689,52 @@ $scope.restoreDragHandle = function ($event, $ui) {
       else
         throw new Error('Duplicate tags on counts ' + $scope.currentCount + ' and ' + this.hashtagMapping[tags[i]]);
     }
+  }
+
+  $scope.computeSpreadsheet = function (options) {
+    // options.counts is an array of counts
+    // options.athleteIDs is an array of athleteIDs
+    var countsToCompute = _.range(1,$scope.routine.counts.length);
+    var columnsToCompute = _.range(0,$scope.routine.config.spreadsheetDisplayColumns.length);
+
+    if (options && options.counts)
+      countsToCompute = options.counts;
+    if (options && options.athleteIDs) {
+      rawColumnsToCompute = $scope.routine.config.spreadsheetDisplayColumns.map(function (column) {
+        return _.intersection(_.map(column, 'id'), options.athleteIDs).length
+      });
+      columnsToCompute = _(rawColumnsToCompute).map(function (val, index) {return index}).compact().valueOf()
+    }
+
+    if (!$scope.spreadsheetDisplay)
+      $scope.spreadsheetDisplay = [];
+
+    countsToCompute.forEach(function (count) {
+      if (!$scope.spreadsheetDisplay[count])
+        $scope.spreadsheetDisplay[count] = [];
+      columnsToCompute.forEach(function (columnIndex) {
+        $scope.spreadsheetDisplay[count][columnIndex] = _($scope.routine.config.spreadsheetDisplayColumns[columnIndex].athlete)
+        .map(function (athlete) {
+          var countObj = $scope.routine.counts[count];
+          return countObj && countObj[athlete.id] ? countObj[athlete.id].note : '';
+        })
+        .uniq().compact().join(', ').valueOf();
+      });
+    });
+  }
+
+  $scope.updateNotes = function (countNumber, index) {
+    var athletesToUpdate = $scope.routine.config.spreadsheetDisplayColumns[index].athlete.map(function (obj) {return obj.id});
+    athletesToUpdate.forEach(function (athleteID) {
+      var countToModify = $scope.routine.counts[countNumber][athleteID];
+      if (!countToModify) {
+        var oldCountData = $scope.lastKnownCount(athleteID);
+        countToModify = $scope.routine.counts[countNumber][athleteID] = _.clone(oldCountData); // Copy position and stuff from previous count
+        countToModify.count = $scope.currentCount;
+      }
+      countToModify.note = $scope.spreadsheetDisplay[countNumber][index];
+    });
+    $scope.computeSpreadsheet({athletes : athletesToUpdate});
   }
 
   // SHOULDDO: Improve error handling so users can see the errors
@@ -708,7 +779,7 @@ $scope.restoreDragHandle = function ($event, $ui) {
         'Content-Type' : 'application/json'
       },
       data : {data : {name : $scope.newRoutine, id : $scope.createID({prefix : 'R'})}}
-    }).success(function (result) {
+    }).then(function (result) {
       $location.path('/routine/'+result[0].id);
       return true;
     }).catch(function (err) {console.log(err)})
@@ -762,13 +833,14 @@ $scope.restoreDragHandle = function ($event, $ui) {
     $scope.errorMessage = '';
 
     AuthService.login($scope.username, $scope.password)
-    .then(function () {
+    .then(function (result) {
       $location.path('/');
       $scope.disabled = false;
       $scope.username = $scope.password = '';
     })
-    .catch(function () {
+    .catch(function (err) {
       $scope.errorMessage = "Invalid Username and/or Password";
+      console.log(err);
       $scope.disabled = false; 
       $scope.username = $scope.password = '';
     });

@@ -10,9 +10,12 @@ angular.module('Cheerleaders').factory('AuthService', ['$q', '$timeout', '$http'
 	}
 
 	var getUserStatus = function () {
-		return $http.get('/api/status')
+		return $http({
+			url : '/api/status',
+			method : 'GET'
+		})
       // handle success
-      .success(function (data) {
+      .then(function (data) {
       	if(data.status){
       		user = true;
       	} else {
@@ -20,7 +23,7 @@ angular.module('Cheerleaders').factory('AuthService', ['$q', '$timeout', '$http'
       	}
       })
       // handle error
-      .error(function (data) {
+      .catch(function (data) {
       	user = false;
       });
 	}
@@ -29,8 +32,8 @@ angular.module('Cheerleaders').factory('AuthService', ['$q', '$timeout', '$http'
 		var deferred = $q.defer();
 
 		$http.post('api/login', {username : username, password : password})
-		.success(function (data, status) {
-			if (status == 200 && data.status) {
+		.then(function (data) {
+			if (data.status && data.status == 200) {
 				user = true;
 				deferred.resolve();
 			} else {
@@ -38,7 +41,7 @@ angular.module('Cheerleaders').factory('AuthService', ['$q', '$timeout', '$http'
 				deferred.reject();
 			}
 		})
-		.error(function (data) {
+		.catch(function (data) {
 			user = false;
 			deferred.reject();
 		});
@@ -50,11 +53,11 @@ angular.module('Cheerleaders').factory('AuthService', ['$q', '$timeout', '$http'
 		var deferred = $q.defer();
 
 		$http.get('api/logout')
-		.success(function (data) {
+		.then(function (data) {
 			user = false;
 			deferred.resolve();
 		})
-		.error(function (data) {
+		.catch(function (data) {
 			user = false;
 			deferred.reject();
 		});
@@ -67,14 +70,14 @@ angular.module('Cheerleaders').factory('AuthService', ['$q', '$timeout', '$http'
 
 		$http.post('api/register', {username: username, password: password})
 
-    	.success(function (data, status) {
+    	.then(function (data, status) {
 	    	if(status === 200 && data.status){
 	    		deferred.resolve();
 	    	} else {
 	    		deferred.reject();
 	    	}
     	})
-    	.error(function (data) {
+    	.catch(function (data) {
     		deferred.reject();
     	});
 

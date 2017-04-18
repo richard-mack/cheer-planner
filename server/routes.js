@@ -165,7 +165,6 @@ router.post('/:type/', loggedIn, function (req, res) {
             // MUSTDO: Add this back in
             tempModel.accountID = req.user._id;
             tempModel.lastModified = new Date();
-            // MUSTDO: Add in check on accountID to query
             console.log('Temp Model: '+JSON.stringify(tempModel));
             return model.findOneAndUpdate({id : modelToSave.id, accountID : req.user._id}, tempModel, {upsert : true, new : true})
         })
