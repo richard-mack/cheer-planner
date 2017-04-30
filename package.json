@@ -31,8 +31,8 @@
     "@types/jasmine": "2.5.36"
   },
   "scripts": {
-    "build": "tsc -p src/",
-    "build:watch": "tsc -p src/ -w",
+    "build": "tsc -p client-angular/",
+    "build:watch": "tsc -p client-angular/ -w",
     "build:e2e": "tsc -p e2e/",
     "preprotractor": "npm run update-webdriver",
     "prestart": "npm run build",
@@ -48,7 +48,7 @@
     "test": "concurrently \"npm run build:watch\" \"karma start karma.conf.js\"",
     "pretest:once": "npm run build",
     "test:once": "karma start karma.conf.js --single-run",
-    "lint": "tslint ./src/**/*.ts -t verbose"
+    "lint": "tslint ./client-angular/**/*.ts -t verbose"
   },
   "homepage": "https://github.com/richard/cheer-planner",
   "main": "karma.conf.js",
@@ -63,8 +63,10 @@
     "@angular/router": "~4.0.0",
     "angular-in-memory-web-api": "~0.3.0",
     "bower": "^1.8.0",
+    "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "express": "^4.14.1",
+    "express-session": "^1.15.2",
     "http-server": "^0.9.0",
     "jasmine-core": "^2.5.2",
     "karma": "^0.13.22",
@@ -73,6 +75,9 @@
     "karma-jasmine": "^0.3.8",
     "karma-junit-reporter": "^0.4.2",
     "mongoose": "^4.5.8",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0",
     "protractor": "^4.0.14",
     "rxjs": "5.0.1",
     "systemjs": "0.19.40",

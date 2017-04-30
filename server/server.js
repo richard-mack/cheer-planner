@@ -78,6 +78,7 @@ var router = express.Router();
 
 app.use(express.static('/Users/richardmack/CheerPlanner/client/bower_components'));
 app.use(express.static('/Users/richardmack/CheerPlanner/client'));
+app.use(express.static('/Users/richardmack/CheerPlanner/client-angular'));
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../client', 'main.html'));
