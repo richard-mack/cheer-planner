@@ -1,45 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Athlete } from './athlete';
+import { Routine } from './routine';
 
-export class Routine {
-	id: string;
-    name: string;
-    accountID : string;
-    counts : object;
-    athletes : [string];
-    lastModified : Date;
-    notes : [string];
-    config : object;
-};
-
-export class Athlete {
-	id : string;
-    name : string;
-	firstName : string;
-	lastName : string;
-	position : string;
-	skills : [string];
-	accountID : string;
-	lastModified : Date;
-}
-
-@Component({
-  selector: 'athlete-editor',
-  template: `
-  <div>
-  	<label> Athlete Id: {{athlete.id}} </label> <br />
-  	<input [(ngModel)]="athlete.firstName" placeholder="First Name"> <input [(ngModel)]="athlete.lastName" placeholder="Last Name">
-  	<select [(ngModel)]="athlete.position">
-  	<option value="Base">Base</option>
-  	<option value="Crossover">Crossover</option>
-  	<option value="Top">Top</option>
-  	</select>
-  </div>
-  `,
-})
-export class AthleteEditorComponent  { 
-	title = 'chrplnr';
-	routine: Routine;
-	athlete: Athlete = {
+const Athletes: Athlete[] = [
+{
 		id : '1',
 		name : 'Richard Mack',
 		firstName : 'Richard',
@@ -48,5 +12,35 @@ export class AthleteEditorComponent  {
 		skills : ['Double Base'],
 		accountID : 'default',
 		lastModified : new Date()
-	};
+	},
+	{
+		id : '2',
+		name : 'Tina Lee',
+		firstName : 'Tina',
+		lastName : 'Lee',
+		position : 'Top',
+		skills : ['Double Base'],
+		accountID : 'default',
+		lastModified : new Date()
+	},
+	{
+		id : '3',
+		name : 'Emily Dufton',
+		firstName : 'Emily',
+		lastName : 'Dufton',
+		position : 'Crossover',
+		skills : ['Double Base'],
+		accountID : 'default',
+		lastModified : new Date()
+	}
+]
+
+@Component({
+	selector : 'cpApp',
+	template : `
+		<floor-display></floor-display>
+	`
+})
+export class AppComponent {
+
 }
