@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Athlete } from './athlete';
+import { Routine } from './routine';
 
 @Component({
 	selector : 'floor-display',
@@ -9,13 +10,13 @@ import { Athlete } from './athlete';
 		<ul>
 			<li *ngFor="let athlete of athletes" (click)="onAthleteClick(athlete)">{{athlete.id}}</li>
 		</ul>
-		<athlete-editor athlete="selectedAthlete"></athlete-editor>
+		<athlete-editor [athlete]="selectedAthlete"></athlete-editor>
 	</div>
 	`,
 })
 export class FloorDisplayComponent {
 	routine: Routine;
-	athletes = Athletes;
+	@Input() athletes: Athlete[];
 	selectedAthlete : Athlete;
 	onAthleteClick(athlete : Athlete): void {
 		this.selectedAthlete = athlete;

@@ -12,11 +12,15 @@ import { Athlete } from './athlete';
   	<option value="Crossover">Crossover</option>
   	<option value="Top">Top</option>
   	</select>
+    <button (click)="onSaveClick()">Save</button>
   </div>
   `,
 })
 export class AthleteEditorComponent  { 
 	title = 'chrplnr';
-	@Input() athlete: Athlete;
-
+	@Input() athlete: Athlete; 
+  onSaveClick() : void {
+    console.log(this.athlete);
+    this.athlete = null;
+  }
 }

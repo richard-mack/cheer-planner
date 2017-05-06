@@ -1,3 +1,5 @@
+// MUSTDO: Re add login stuff on api
+
 var express = require('express');
 var passport = require('passport');
 var Account = require('./models/account');
@@ -82,7 +84,7 @@ router.get('/status', function(req, res) {
   });
 });
 
-router.post('/Account/', loggedIn, function (req, res) {
+router.post('/Account/', function (req, res) {
     console.log('hit it');
     //var userID = req.user._id;
     var id = req.user._id;
@@ -96,7 +98,7 @@ router.post('/Account/', loggedIn, function (req, res) {
     });
 });
 
-router.get('/Account/', loggedIn, function (req, res) {
+router.get('/Account/', function (req, res) {
     var userID = req.user._id;
     return Account.findOne({_id : userID}).then(function (result) {
         return res.status(200).json(result.config);
@@ -106,7 +108,7 @@ router.get('/Account/', loggedIn, function (req, res) {
     });
 });
 
-router.get('/:type/:id?/', loggedIn, function (req,res) {
+router.get('/:type/:id?/', function (req,res) {
     var include; // Initialize it here
     var model = getModel(req.params.type);
     if (!model)
@@ -138,7 +140,7 @@ router.get('/:type/:id?/', loggedIn, function (req,res) {
     }).catch(function (err) {console.log(err);});
 });
 
-router.post('/:type/', loggedIn, function (req, res) {
+router.post('/:type/', function (req, res) {
     // Check if it is a type we can deal with
     var model = getModel(req.params.type);
 
