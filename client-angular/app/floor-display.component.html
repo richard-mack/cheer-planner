@@ -1,0 +1,50 @@
+<div cpDropTarget (cpDrop)="onDrop($event)" [ngStyle]="{
+	'position' : 'absolute',
+	'left' : config.left + 'px',
+	'top' : config.top + 'px'
+}">
+	<!-- Making the floor -->
+	<div *ngFor="let n of [1,2,3,4,5,6,7,8,9]" [ngStyle]="{
+			'height' : config.height + 'px',
+			'width' : config.matWidth + 'px', 
+			'position' : 'absolute',
+			'left' : (n-1) * config.matWidth + 'px',
+			'top' : '0px',
+			'border-left' : '1px solid black',
+			'border-top' : '1px solid black',
+			'border-bottom' : '1px solid black',
+			'border-right' : (n == 9 ? 1 : 0) + 'px solid black'
+			}
+		">
+	</div>
+	<!-- Placing the athletes -->
+	<div [cpDraggable]="{data : position.athleteID}" 
+	*ngFor="let position of athletePositions" 
+	(click)="onAthleteClick(position.athleteID)"
+	[ngStyle]="{
+		'position' : 'absolute',
+		'left' : config.matWidth*9*position.posx + 'px',
+		'top' : config.matHeight*position.posy + 'px'
+	}">
+	{{position.athleteName}}
+	</div>
+
+	<div [ngStyle]="{
+		'height' : config.height - 15 + 'px',
+		'width' : '120px',
+		'position' : 'absolute',
+		'left' : config.width - 115 + 'px',
+		'top' : '0px',
+		'overflow' : 'scroll'
+	}">
+		<label style="position: absolute; top : 0px; left: 0px;">Unused Athletes</label>
+	</div>
+	<button [ngStyle]="{
+		'height' : '15px',
+		'width' : '120px',
+		'position' : 'absolute',
+		'top' : config.height - 14 + 'px',
+		'left' : config.width - 118 + 'px'
+	}">Add Athlete</button>
+	<athlete-editor [athlete]="selectedAthlete"></athlete-editor>
+</div>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Athlete } from './athlete';
+import { Athlete } from './models/athlete';
 
 @Component({
   selector: 'athlete-editor',
@@ -17,10 +17,9 @@ import { Athlete } from './athlete';
   `,
 })
 export class AthleteEditorComponent  { 
-	title = 'chrplnr';
 	@Input() athlete: Athlete; 
+
   onSaveClick() : void {
-    console.log(this.athlete);
     this.athlete = null;
   }
 }

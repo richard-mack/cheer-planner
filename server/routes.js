@@ -51,7 +51,7 @@ router.post('/register', function(req, res) {
 });
 
 router.get('/login', function (req, res) {
-    res.sendFile('/Users/richardmack/Cheerplanner/client/login.html');
+    res.sendFile('/Users/richardmack/Cheerplanner/client-angular/index.html');
 });
 
 router.post('/login', function(req, res, next) {
@@ -84,8 +84,7 @@ router.get('/status', function(req, res) {
   });
 });
 
-router.post('/Account/', function (req, res) {
-    console.log('hit it');
+router.post('/Account/', loggedIn, function (req, res) {
     //var userID = req.user._id;
     var id = req.user._id;
     var config = req.body.config;
@@ -98,7 +97,7 @@ router.post('/Account/', function (req, res) {
     });
 });
 
-router.get('/Account/', function (req, res) {
+router.get('/Account/', loggedIn, function (req, res) {
     var userID = req.user._id;
     return Account.findOne({_id : userID}).then(function (result) {
         return res.status(200).json(result.config);
@@ -108,14 +107,13 @@ router.get('/Account/', function (req, res) {
     });
 });
 
-router.get('/:type/:id?/', function (req,res) {
+router.get('/:type/:id?/', loggedIn, function (req,res) {
     var include; // Initialize it here
     var model = getModel(req.params.type);
     if (!model)
         return res.status(400).json({error : 'No Models of that type exist'});
 
-    query = {accountID : req.user._id}; // MUSTDO: Add auth restriction here (using user._id and accountID in Mongo)
-    console.log(query);
+    query = {accountID : req.user._id};
     if (req.params.id)
         query.id = req.params.id;
     else
@@ -129,7 +127,7 @@ router.get('/:type/:id?/', function (req,res) {
             returnObj.routine = result[0];
             return Promise.all(
                 returnObj.routine.athletes.map(function (athleteID) {
-                    return Athlete.findOne({id : athleteID, accountID : req.user._id})
+                    return Athlete.findOne({id : athleteID}) // MUSTDO: Add auth restriction here as `accountID : req.user._id` or something
                 }))
             .then(function (arrayOfAthletes) {
                 returnObj.athletes = arrayOfAthletes;
@@ -140,7 +138,7 @@ router.get('/:type/:id?/', function (req,res) {
     }).catch(function (err) {console.log(err);});
 });
 
-router.post('/:type/', function (req, res) {
+router.post('/:type/', loggedIn, function (req, res) {
     // Check if it is a type we can deal with
     var model = getModel(req.params.type);
 

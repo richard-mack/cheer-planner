@@ -76,15 +76,17 @@ app.use(passport.session());
 
 var router = express.Router();
 
-app.use(express.static('/Users/richardmack/CheerPlanner/client/bower_components'));
-app.use(express.static('/Users/richardmack/CheerPlanner/client'));
 app.use(express.static('/Users/richardmack/CheerPlanner/client-angular'));	
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client', 'main.html'));
+// We need to have the API routes before the generic one
+app.use('/api', routes);
+
+// If we aren't accessing an API, load the index and let its routing handle where to go
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../client-angular', 'index.html'));
 });
 
-app.use('/api', routes);
+
 
 var Account = require('./models/account');
 passport.use(new LocalStrategy(Account.authenticate()));
