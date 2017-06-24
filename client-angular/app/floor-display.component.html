@@ -39,7 +39,7 @@
 	}">
 		<label style="position: absolute; top : 0px; left: 0px;">Unused Athletes</label>
 	</div>
-	<button [ngStyle]="{
+	<button (click)="onNewAthleteClick()" [ngStyle]="{
 		'height' : '15px',
 		'width' : '120px',
 		'position' : 'absolute',

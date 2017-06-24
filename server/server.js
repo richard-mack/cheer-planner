@@ -75,8 +75,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var router = express.Router();
-
-app.use(express.static('/Users/richardmack/CheerPlanner/client-angular'));	
+console.log((path.join(__dirname, '../client-angular')));
+app.use(express.static(path.join(__dirname, '../client-angular')));	
 
 // We need to have the API routes before the generic one
 app.use('/api', routes);

@@ -129,7 +129,7 @@ export class Config {
     titleDisplay : object = {
       enabled : true,
       top : 0,
-      left : "50%",
+      left : 500,
       width : 200,
       height : 25,
       fontSize : 24,

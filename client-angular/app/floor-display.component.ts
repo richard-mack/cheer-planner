@@ -31,6 +31,12 @@ export class FloorDisplayComponent implements OnInit {
 		this.selectedAthlete = this.routine.athletes.find(athlete => athleteID == athlete.id);
 	}
 
+	onNewAthleteClick() : void {
+		this.routine.athletes.unshift(new Athlete({firstName : 'New', lastName : 'Athlete'}))
+		this.selectedAthlete = this.routine.athletes[0];
+		this.computeAthletePositions();
+	}
+
 	computeAthletePositions() : void {
 		let unusedCount = 0;
 		this.athletePositions = [];
@@ -43,7 +49,7 @@ export class FloorDisplayComponent implements OnInit {
 			}
 			else {
 				this.athletePositions.push({
-					athleteID : athlete.id,
+					athleteID : athlete.id,  
 					athleteName : athlete.firstName,
 					note : "Unused",
 					posx : ((this.config['width']) - 115)/(this.config['matWidth']*9),

@@ -49,6 +49,8 @@ export class DataService {
 			delete athlete.__v;
 		})
 		routineData.athletes = routineData.athletes.map(a => a.id);
+		if (!routineData.id)
+			routineData.id = this.createID({prefix : 'R'});
 		delete routineData._id;
 		delete routineData.__v;
 		return this.http.post('/api/Athlete', {data : athletes}, {'Content-Type' : 'application/json'}).toPromise().then(response => {
