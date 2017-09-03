@@ -1,0 +1,8 @@
+const StateActionTypes = {
+	SET_CURRENT_COUNT : 'SET_CURRENT_COUNT',
+	SET_ACTIVE_VIEW : 'SET_ACTIVE_VIEW',
+	HIDE_ATHLETE : 'HIDE_ATHLETE',
+	SHOW_ATHLETE : 'SHOW_ATHLETE',
+};
+
+export default StateActionTypes;

@@ -1,0 +1,102 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	font-size: 100%;
+	vertical-align: baseline;
+	font-family: inherit;
+	color: inherit;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	-o-appearance: none;
+	appearance: none;
+}
+
+body {
+	font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	line-height: 1.4em;
+	background: #eaeaea;
+	color: #4d4d4d;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-ms-font-smoothing: antialiased;
+	-o-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+
+#header {
+	height : 5%;
+	padding-top: 15px;
+	border-radius: inherit;
+}
+
+#logout-button {
+	position : absolute;
+	right : 0%;
+	border : 1px black solid;
+}
+
+
+#main {
+	position: relative;
+	z-index: 2;
+	border-top: 1px dotted #adadad;
+}
+
+.floor-mat {
+	position : absolute;
+	height : 667px;
+	width : 100px;
+	border : 1px black solid;
+	border-right : 0px;
+}
+
+#unused-athletes-list {
+	position : absolute;
+	height : 667px;
+	overflow : scroll;
+	width : 120px;
+	left : 927px;
+}
+
+#count-comment {
+	position : absolute;
+	width : 300px;
+	left : 300px;
+	top : 667px;
+	text-align : center;
+}
+
+#footer {
+	color: #777;
+	padding: 0 15px;
+	position: absolute;
+	right: 0;
+	bottom: -31px;
+	left: 0;
+	height: 20px;
+	z-index: 1;
+	text-align: center;
+}
+
+#footer:before {
+	content: '';
+	position: absolute;
+	right: 0;
+	bottom: 31px;
+	left: 0;
+	height: 50px;
+	z-index: -1;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),
+				0 6px 0 -3px rgba(255, 255, 255, 0.8),
+				0 7px 1px -3px rgba(0, 0, 0, 0.3),
+				0 43px 0 -6px rgba(255, 255, 255, 0.8),
+				0 44px 2px -6px rgba(0, 0, 0, 0.2);
+}

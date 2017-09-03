@@ -75,15 +75,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var router = express.Router();
-console.log((path.join(__dirname, '../client-angular')));
-app.use(express.static(path.join(__dirname, '../client-angular')));	
+//console.log((path.join(__dirname, '../client-angular')));
+app.use(express.static(path.join(__dirname, '../client-react')));	
 
 // We need to have the API routes before the generic one
 app.use('/api', routes);
 
 // If we aren't accessing an API, load the index and let its routing handle where to go
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client-angular', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client-react', 'index.html'));
 });
 
 

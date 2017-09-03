@@ -107,13 +107,16 @@ router.get('/Account/', loggedIn, function (req, res) {
     });
 });
 
-router.get('/:type/:id?/', loggedIn, function (req,res) {
+// MUSTDO: Once permissions are implemented, go back to logged in check
+//router.get('/:type/:id?/', loggedIn, function (req,res) {
+router.get('/:type/:id?/', function (req, res) {
     var include; // Initialize it here
     var model = getModel(req.params.type);
     if (!model)
         return res.status(400).json({error : 'No Models of that type exist'});
-
-    query = {accountID : req.user._id};
+    // MUSTDO: Once permissions are implemented, restore accountId check
+    //query = {accountID : req.user._id};
+    query = {};
     if (req.params.id)
         query.id = req.params.id;
     else
@@ -138,7 +141,9 @@ router.get('/:type/:id?/', loggedIn, function (req,res) {
     }).catch(function (err) {console.log(err);});
 });
 
-router.post('/:type/', loggedIn, function (req, res) {
+// MUSTDO: Once permissions are implemented, restore auth check
+//router.post('/:type/', loggedIn, function (req, res) {
+router.post('/:type/', function (req, res) {
     // Check if it is a type we can deal with
     var model = getModel(req.params.type);
 
@@ -162,8 +167,8 @@ router.post('/:type/', loggedIn, function (req, res) {
                 if (propertyName[0] != '_') // Only move over the properties which aren't prefixed by '_' (mongo internal or non-persist)
                     tempModel[propertyName] = modelToSave[propertyName];
             });
-            // MUSTDO: Add this back in
-            tempModel.accountID = req.user._id;
+            // MUSTDO: Once permissions are implemented, restore auth check
+            //tempModel.accountID = req.user._id;
             tempModel.lastModified = new Date();
             console.log('Temp Model: '+JSON.stringify(tempModel));
             return model.findOneAndUpdate({id : modelToSave.id, accountID : req.user._id}, tempModel, {upsert : true, new : true})
