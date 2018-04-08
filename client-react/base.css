@@ -33,29 +33,45 @@ body {
 
 #header {
 	height : 5%;
-	padding-top: 15px;
 	border-radius: inherit;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+	flex-direction : row;
+	padding-bottom : 10px;
 }
 
-#logout-button {
+.header-button {
+	flex-grow : 1;
+	font-weight : 600;
+}
+#modal-mask {
 	position : absolute;
-	right : 0%;
-	border : 1px black solid;
+	height : 100%;
+	width : 100%;
+	z-index : 1;
+	background-color : lightgrey;
+	top : 0px;
+	left : 0px;
+	opacity : 0.75;
 }
 
-
-#main {
-	position: relative;
-	z-index: 2;
-	border-top: 1px dotted #adadad;
+.modal {
+	z-index : 2;
+	position : absolute;
+	top : 250px;
+	width : 200px
 }
-
 .floor-mat {
 	position : absolute;
 	height : 667px;
 	width : 100px;
 	border : 1px black solid;
 	border-right : 0px;
+}
+
+.floor-athlete {
+	font-weight : 400;
 }
 
 #unused-athletes-list {
@@ -74,19 +90,47 @@ body {
 	text-align : center;
 }
 
-#footer {
-	color: #777;
-	padding: 0 15px;
-	position: absolute;
-	right: 0;
-	bottom: -31px;
-	left: 0;
-	height: 20px;
-	z-index: 1;
-	text-align: center;
+.spreadsheet-row-header {
+	text-align : right;
 }
 
-#footer:before {
+.spreadsheet-row {
+	text-align : center;
+	background-color : lightgrey;
+}
+
+.spreadsheet-row-odd {
+	background-color : #eeeeee;
+}
+
+.spreadsheet-note-cell {
+	max-width : 300px;
+}
+
+
+#footer {
+	justify-content : center;
+	align-items : center;
+	flex-direction : row;
+	display : flex;
+	padding-top: 10px;
+	position: absolute;
+	right: 0;
+	bottom: 0px;
+	left: 0;
+	height: 5%;
+}
+
+.footer-button {
+	flex-grow : 1;
+	font-weight : 600;
+}
+
+#logout-button {
+	flex-grow : 0.2;
+}
+
+/*#footer:before {
 	content: '';
 	position: absolute;
 	right: 0;
@@ -99,4 +143,4 @@ body {
 				0 7px 1px -3px rgba(0, 0, 0, 0.3),
 				0 43px 0 -6px rgba(255, 255, 255, 0.8),
 				0 44px 2px -6px rgba(0, 0, 0, 0.2);
-}
+}*/

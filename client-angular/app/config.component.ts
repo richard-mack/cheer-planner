@@ -42,7 +42,7 @@ export class ConfigComponent implements OnInit {
 
 	ngOnInit() : void {
 		this.dataService.getAccountConfig().then(config => {
-			this.config = new Config(config);
+				this.config = new Config(config);
 			this.configKeys = Object.keys(this.config);
 		});
 	}

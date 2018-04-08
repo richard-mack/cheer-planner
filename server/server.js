@@ -31,14 +31,6 @@ const routineSchema = mongoose.Schema({
 	accountID : String,
 });
 
-const athleteSchema = mongoose.Schema({
-	id : String,
-	firstName : String,
-	lastName : String,
-	routineID : String,
-	accountID : String,
-});
-
 const accountSchema = mongoose.Schema({
 	username : String,
 	password : String,

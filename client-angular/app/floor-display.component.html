@@ -1,14 +1,14 @@
 <div cpDropTarget (cpDrop)="onDrop($event)" [ngStyle]="{
 	'position' : 'absolute',
-	'left' : config.left + 'px',
-	'top' : config.top + 'px'
+	'left' : config.matDisplay.left + 'px',
+	'top' : config.matDisplay.top + 'px'
 }">
 	<!-- Making the floor -->
 	<div *ngFor="let n of [1,2,3,4,5,6,7,8,9]" [ngStyle]="{
-			'height' : config.height + 'px',
-			'width' : config.matWidth + 'px', 
+			'height' : config.matDisplay.height + 'px',
+			'width' : config.matDisplay.matWidth + 'px', 
 			'position' : 'absolute',
-			'left' : (n-1) * config.matWidth + 'px',
+			'left' : (n-1) * config.matDisplay.matWidth + 'px',
 			'top' : '0px',
 			'border-left' : '1px solid black',
 			'border-top' : '1px solid black',
@@ -23,17 +23,17 @@
 	(click)="onAthleteClick(position.athleteID)"
 	[ngStyle]="{
 		'position' : 'absolute',
-		'left' : config.matWidth*9*position.posx + 'px',
-		'top' : config.matHeight*position.posy + 'px'
+		'left' : config.matDisplay.matWidth*9*position.posx + 'px',
+		'top' : config.matDisplay.matHeight*position.posy + 'px'
 	}">
 	{{position.athleteName}}
 	</div>
 
 	<div [ngStyle]="{
-		'height' : config.height - 15 + 'px',
+		'height' : config.matDisplay.height - 15 + 'px',
 		'width' : '120px',
 		'position' : 'absolute',
-		'left' : config.width - 115 + 'px',
+		'left' : config.matDisplay.width - 115 + 'px',
 		'top' : '0px',
 		'overflow' : 'scroll'
 	}">
@@ -43,8 +43,8 @@
 		'height' : '15px',
 		'width' : '120px',
 		'position' : 'absolute',
-		'top' : config.height - 14 + 'px',
-		'left' : config.width - 118 + 'px'
+		'top' : config.matDisplay.height - 14 + 'px',
+		'left' : config.matDisplay.width - 118 + 'px'
 	}">Add Athlete</button>
 	<athlete-editor [athlete]="selectedAthlete"></athlete-editor>
 </div>

@@ -6,7 +6,5 @@
 .DS_Store
 **/.DS_Storei
 # Ignore old client files
-/client/*
-/client/**
-/client-angular/*
-/client-angular/**
+client/
+client-angular/

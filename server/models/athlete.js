@@ -4,8 +4,7 @@ var Schema = mongoose.Schema;
 var Athlete = new Schema({
     id : String,
     name : String,
-	firstName : String,
-	lastName : String,
+	shortName : String,
 	position : String,
 	skills : [String],
 	accountID : String,

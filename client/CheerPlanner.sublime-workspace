@@ -80,37 +80,126 @@
 	"buffers":
 	[
 		{
-			"file": "app.js",
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/root.js",
 			"settings":
 			{
-				"buffer_size": 65,
+				"buffer_size": 290,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "index.html",
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/data/Athlete.js",
 			"settings":
 			{
-				"buffer_size": 8953,
+				"buffer_size": 243,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "controllers.js",
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/containers/AppContainer.js",
 			"settings":
 			{
-				"buffer_size": 13513,
+				"buffer_size": 506,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/richardmack/CheerPlanner/angular-seed-master/server/server.js",
+			"contents": "import Athlete from './Athlete';\nimport Immutable from 'immutable';\nimport {ReduceStore} from 'flux/utils';\nimport AthleteActionTypes from './AthleteActionTypes';\nimport CheerDispatcher from './CheerDispatcher';\n\nclass AthleteStore extends ReduceStore {\n\tconstructor() {\n\t\tsuper(CheerDispatcher);\n\t}\n\n\tgetInitialState() {\n\t\treturn Immutable.Map({\n\t\t\tathletesList : Immutable.Set(),\n\t\t\teditingAthlete : new Athlete(),\n\t\t\tisEditingAthlete : false,\n\t\t});\n\t}\n\n\treduce(state, action) {\n\t\tswitch (action.type) {\n\t\t\tcase AthleteActionTypes.ADD_ATHLETE:\n\t\t\t\tif (!action.athleteToCreate || !action.athleteToCreate.name)\n\t\t\t\t\treturn state;\n\t\t\t\tconsole.log(state);\n\t\t\t\treturn state.update('athletesList', list => list.add(new Athlete(action.athleteToCreate)));\n\t\t\t\tbreak;\n\n\t\t\tcase AthleteActionTypes.OPEN_ATHLETE_DETAILS:\n\t\t\t\tstate.set('isEditingAthlete', true);\n\t\t\t\tconsole.log(state);\n\t\t\t\tif (action.id) {\n\t\t\t\t\tstate.set('editingAthlete', state.get('athletesList').)\n\t\t\t\t}\n\t\t\t\tbreak;\n\n\t\t\tdefault:\n\t\t\t\tconsole.log('State');\n\t\t\t\tconsole.log(state);\n\t\t\t\treturn state;\n\t\t\t\tbreak;\n\t\t}\n\t}\n}\n\nexport default new AthleteStore();",
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/data/AthleteStore.js",
+			"file_size": 1028,
+			"file_write_time": 131448856650000000,
 			"settings":
 			{
-				"buffer_size": 3275,
+				"buffer_size": 1111,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/data/AthleteActions.js",
+			"settings":
+			{
+				"buffer_size": 866,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/data/AthleteActionTypes.js",
+			"settings":
+			{
+				"buffer_size": 181,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/views/AppView.js",
+			"settings":
+			{
+				"buffer_size": 2584,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 102 files for \"onDeleteTodo\" (regex)\n\n/Users/richardmack/CheerPlanner/client-react/bundle.js:\n 15257:                   () => props.onDeleteTodo(todo.id)\n\n/Users/richardmack/CheerPlanner/client-react/src/views/AppView.js:\n   76:                   () => props.onDeleteTodo(todo.id)\n\n2 matches across 2 files\n\n\nSearching 102 files for \"Athelete\" (regex)\n\n/Users/richardmack/CheerPlanner/client-react/bundle.js:\n 15157:     onClickAddAthlete: AtheleteActions.openAthleteDetails,\n\n/Users/richardmack/CheerPlanner/client-react/src/containers/AppContainer.js:\n   16:     onClickAddAthlete : AtheleteActions.openAthleteDetails,\n\n2 matches across 2 files\n",
+			"settings":
+			{
+				"buffer_size": 657,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/base.css",
+			"settings":
+			{
+				"buffer_size": 1297,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/index.html",
+			"settings":
+			{
+				"buffer_size": 210,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/data/CheerDispatcher.js",
+			"settings":
+			{
+				"buffer_size": 68,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/richardmack/CheerPlanner/client-react/webpack.config.js",
+			"settings":
+			{
+				"buffer_size": 281,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "var path = require('path');"
+			}
+		},
+		{
+			"contents": "import React from 'react';",
+			"file": "/Users/richardmack/CheerPlanner/client-react/src/views/NewTodo.js",
+			"file_size": 0,
+			"file_write_time": 131446133370000000,
+			"settings":
+			{
+				"buffer_size": 26,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -123,17 +212,17 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "",
+		"height": 167.0,
+		"last_filter": "install",
 		"selected_items":
 		[
 			[
-				"ali",
-				"Preferences: Alignment File Settings – Default"
-			],
-			[
 				"install",
 				"Package Control: Install Package"
+			],
+			[
+				"ali",
+				"Preferences: Alignment File Settings – Default"
 			],
 			[
 				"instal",
@@ -162,11 +251,65 @@
 	"expanded_folders":
 	[
 		"/Users/richardmack/CheerPlanner",
-		"/Users/richardmack/CheerPlanner/angular-seed-master",
-		"/Users/richardmack/CheerPlanner/angular-seed-master/server"
+		"/Users/richardmack/CheerPlanner/client-react",
+		"/Users/richardmack/CheerPlanner/client-react/src",
+		"/Users/richardmack/CheerPlanner/client-react/src/containers",
+		"/Users/richardmack/CheerPlanner/client-react/src/data",
+		"/Users/richardmack/CheerPlanner/client-react/src/views",
+		"/Users/richardmack/CheerPlanner/server"
 	],
 	"file_history":
 	[
+		"/Users/richardmack/CheerPlanner/client-react/src/data/AthleteDetailsStore.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/containers/AppContainer.js",
+		"/Users/richardmack/CheerPlanner/client/controllers.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/CreateID.js",
+		"/Users/richardmack/CheerPlanner/client-react/bundle.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/AthleteStore.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/TodoStore.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/TodoActionTypes.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/Todo.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/TodoActions.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/AthleteActions.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/Athlete.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/AthleteActionTypes.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/models/athlete.ts",
+		"/Users/richardmack/CheerPlanner/server/server.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/root.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/index.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/config.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/models/config.ts",
+		"/Users/richardmack/CheerPlanner/client-react/src/views/AppView.js",
+		"/Users/richardmack/CheerPlanner/client-react/base.css",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/Counter.js",
+		"/Users/richardmack/CheerPlanner/client-react/src/data/TodoDispatcher.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/models/skill.ts",
+		"/Users/richardmack/CheerPlanner/client-react/index.js",
+		"/Users/richardmack/CheerPlanner/server/models/skill.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/data.service.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/routine-list.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/floor-display.component.html",
+		"/Users/richardmack/CheerPlanner/client-angular/app/dragdrop.directive.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/display.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/floor-display.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/athlete-editor.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/header.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/display.component.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/models/routine.ts",
+		"/Users/richardmack/CheerPlanner/server/routes.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/note-display.component.ts",
+		"/Users/richardmack/CheerPlanner/client/partials/config.html",
+		"/Users/richardmack/CheerPlanner/client-angular/app/dragdrop.service.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/app-routing.module.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/app.module.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/not-found.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/numeric-input.component.js",
+		"/Users/richardmack/CheerPlanner/client-angular/app/numeric-input.component.ts",
+		"/Users/richardmack/CheerPlanner/client-angular/app/app-routing.module.js",
+		"/Users/richardmack/CheerPlanner/client/partials/routineViewer.html",
+		"/Users/richardmack/CheerPlanner/client/app.js",
+		"/Users/richardmack/CheerPlanner/angular-seed-master/server/server.js",
+		"/Users/richardmack/CheerPlanner/client/index.html",
 		"/Users/richardmack/CheerPlanner/angular-seed-master/client/index.html",
 		"/Users/richardmack/CheerPlanner/angular-seed-master/client/storage.json",
 		"/Users/richardmack/CheerPlanner/angular-seed-master/app/services.js",
@@ -244,57 +387,7 @@
 		"/Users/richardmack/roadmunk/roadmunk/app/server/models/View.Template.BaseGroupingTemplate.js",
 		"/Users/richardmack/roadmunk/roadmunk/app/server/models/BaseModelMixin.js",
 		"/Users/richardmack/roadmunk/roadmunk/app/server/node_modules/JSClass/JS.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelDependency.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/TrackUserProgressTask.js",
-		"/Users/richardmack/roadmunk/Roadmunk Logs Messages",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/servers/WebServer.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/tests/models/User.tests.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/table.html",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/api/reportsAPI.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/api/TestingAPI.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/File.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/tests/toolbox.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/api/UsersAPI.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/settings/BillingViewModel.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/ItemDescription.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/api/PublishAPI.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/ExternalAuthManager.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/CustomPropertyDialog.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/SharingDialogVM.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/templates/AddItem.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/Table.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/tests/lib/validationTests.js",
-		"/Users/richardmack/roadmunk/roadmunk/devops/deploy/developer-setup.md",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/RoadmapData.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/Timeline.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/api/syncAPI.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/ClientIntegrationEngine.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/models/BaseModelMixin.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/PermissionModel.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/integrations/IntegrationEngine.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/IntegrationsVM.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/roadmaps/OnboardingWizardVM.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/settings/settingsViewModel.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/lib/Errors.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/notifications/Offline.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/models/ModelCache.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/DeleteIntrepidOrphans.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/tasks/DeleteAccountOrphans.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/lib/TaskManager.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelStorage.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/View.Template.Timeline.Mixin.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/system/reports/reports/accounts.html",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/bindings/roadmunk-datepicker.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/RoadmapData.Integrations.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/knockout-roadmunk-select.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/common/models/User.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/api/RoadmapDataAPI.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/models/RoadmapData.Integrations.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelCache.js",
-		"/Users/richardmack/Downloads/testlink-1.9.15/config.inc.php",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/lib/stripe.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/intrepid/templates/table/Table.js",
-		"/Users/richardmack/roadmunk/roadmunk/app/client/views/base/timeline.html"
+		"/Users/richardmack/roadmunk/roadmunk/app/server/models/ModelDependency.js"
 	],
 	"find":
 	{
@@ -305,6 +398,8 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"<project>,-*/node_modules/*,-*/e2e-tests/*,-*/bower_components/*",
+			"<project>,-*/node_modules/*,-*/e2e-tests/*",
 			"<project>,-*/node_modules/*,-*/vendor/*,-*/app/build/*",
 			"",
 			"<project>,-*/node_modules/*,-*/vendor/*,-*/app/build/*",
@@ -322,6 +417,30 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Athelete",
+			"onDeleteTodo",
+			"createID",
+			"header",
+			"addListener",
+			"state.onDelete",
+			"Counter",
+			"new Config",
+			"config",
+			"config.matDisplay",
+			"this.config",
+			"set",
+			"(set .*\\).*):",
+			"shim.min",
+			"__",
+			"createID",
+			"console.log",
+			"_",
+			",",
+			"routineController",
+			"config.",
+			"down.png",
+			"up.png",
+			"onClick",
 			"save",
 			"which",
 			"listenArrow",
@@ -425,38 +544,19 @@
 			"company_id",
 			"save :",
 			"RootModel",
-			"eval(",
-			"eval",
-			"mapReduce",
-			"--test",
-			"packageexpires_at",
-			"packageexpires",
-			"updated subscript",
-			"Updated Subscription",
-			"'Item'",
-			"item",
-			"intercom",
-			"stripe_plan",
-			"stripe_account_balance",
-			"stripe_delinquent",
-			"plan",
-			"stripe",
-			"stripe_plan",
-			"stripe_plan_interval",
-			"subscriptionPeriodEnds_at",
-			",(\"\\d)",
-			"(\"\\d)",
-			"cardExpiryMonth",
-			"sendCreditCardExpiryRemind",
-			"creditCardExpiryNotification",
-			"creditCardExpiryNotificaiton"
+			"eval("
 		],
 		"highlight": true,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
+			"config.matDisplay",
+			"$1",
+			";",
+			"app/down.png",
+			"app/up.png",
 			"viewingCount",
 			"showCount",
 			"currentCount",
@@ -525,24 +625,82 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "app.js",
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/root.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 65,
+						"buffer_size": 290,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								65,
-								65
+								189,
+								189
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/data/Athlete.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 243,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								80,
+								80
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/containers/AppContainer.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 506,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								39,
+								39
 							]
 						],
 						"settings":
@@ -558,28 +716,27 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "index.html",
+					"buffer": 3,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/data/AthleteStore.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8953,
+						"buffer_size": 1111,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1185,
-								1185
+								956,
+								956
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -589,65 +746,299 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "controllers.js",
+					"buffer": 4,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/data/AthleteActions.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13513,
+						"buffer_size": 866,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								575,
-								575
+								836,
+								836
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"open_with_edit": true,
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 3.0,
+						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "/Users/richardmack/CheerPlanner/angular-seed-master/server/server.js",
+					"buffer": 5,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/data/AthleteActionTypes.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3275,
+						"buffer_size": 181,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3129,
-								3129
+								96,
+								116
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"open_with_edit": true,
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
-						"translation.x": 1.0,
-						"translation.y": 425.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/views/AppView.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2584,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								413,
+								413
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 40.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 657,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										142,
+										154
+									],
+									[
+										269,
+										281
+									],
+									[
+										450,
+										458
+									],
+									[
+										595,
+										603
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								601,
+								601
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/Users/richardmack/CheerPlanner",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 2,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 150.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/Users/richardmack/CheerPlanner/client-react/base.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1297,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								666,
+								666
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 196.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/Users/richardmack/CheerPlanner/client-react/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 210,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								210,
+								210
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/data/CheerDispatcher.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 68,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								68,
+								68
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/Users/richardmack/CheerPlanner/client-react/webpack.config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 281,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								73,
+								73
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"auto_name": "var path = require('path');",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/Users/richardmack/CheerPlanner/client-react/src/views/NewTodo.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 26,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								26,
+								26
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
 					"type": "text"
 				}
 			]
@@ -684,6 +1075,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.doc":
+	{
+		"height": 0.0
+	},
 	"output.exec":
 	{
 		"height": 100.0
@@ -705,6 +1100,214 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"athleteactiont",
+				"client-react/src/data/AthleteActionTypes.js"
+			],
+			[
+				"appview",
+				"client-react/src/views/AppView.js"
+			],
+			[
+				"athleteactiontypes",
+				"client-react/src/data/AthleteActionTypes.js"
+			],
+			[
+				"root.js",
+				"client-react/src/root.js"
+			],
+			[
+				"athlete.js",
+				"client-react/src/data/Athlete.js"
+			],
+			[
+				"css",
+				"client-react/base.css"
+			],
+			[
+				"athletestore",
+				"client-react/src/data/AthleteStore.js"
+			],
+			[
+				"athleteacti",
+				"client-react/src/data/AthleteActions.js"
+			],
+			[
+				"appconta",
+				"client-react/src/containers/AppContainer.js"
+			],
+			[
+				"todo.js",
+				"client-react/src/data/Todo.js"
+			],
+			[
+				"athlete.ts",
+				"client-angular/app/models/athlete.ts"
+			],
+			[
+				"webpa",
+				"client-react/webpack.config.js"
+			],
+			[
+				"appcontain",
+				"client-react/src/containers/AppContainer.js"
+			],
+			[
+				"todoaction",
+				"client-react/src/data/TodoActions.js"
+			],
+			[
+				"todostor",
+				"client-react/src/data/TodoStore.js"
+			],
+			[
+				"todoactions",
+				"client-react/src/data/TodoActions.js"
+			],
+			[
+				"todoactiontypes",
+				"client-react/src/data/TodoActionTypes.js"
+			],
+			[
+				"index.html",
+				"client-react/index.html"
+			],
+			[
+				"skill.ts",
+				"client-angular/app/models/skill.ts"
+			],
+			[
+				"skill",
+				"server/models/skill.js"
+			],
+			[
+				"athlet.ts",
+				"client-angular/app/models/athlete.ts"
+			],
+			[
+				"floor-di",
+				"client-angular/app/floor-display.component.html"
+			],
+			[
+				"floor",
+				"client-angular/app/floor-display.component.html"
+			],
+			[
+				"floor-",
+				"client-angular/app/floor-display.component.ts"
+			],
+			[
+				"athletets",
+				"client-angular/app/models/athlete.ts"
+			],
+			[
+				"dag",
+				"client-angular/app/dragdrop.directive.ts"
+			],
+			[
+				"config.ts",
+				"client-angular/app/models/config.ts"
+			],
+			[
+				"control",
+				"client/controllers.js"
+			],
+			[
+				"data",
+				"client-angular/app/data.service.ts"
+			],
+			[
+				"routine-li",
+				"client-angular/app/routine-list.component.ts"
+			],
+			[
+				"header.",
+				"client-angular/app/header.component.ts"
+			],
+			[
+				"drag",
+				"client-angular/app/dragdrop.directive.ts"
+			],
+			[
+				"display",
+				"client-angular/app/display.component.ts"
+			],
+			[
+				"displa",
+				"client-angular/display.component.js"
+			],
+			[
+				"routine.ts",
+				"client-angular/app/models/routine.ts"
+			],
+			[
+				"ath",
+				"client-angular/app/athlete-editor.component.ts"
+			],
+			[
+				"dis",
+				"client-angular/app/floor-display.component.ts"
+			],
+			[
+				"config.",
+				"client-angular/app/config.component.ts"
+			],
+			[
+				"header",
+				"client-angular/app/header.component.ts"
+			],
+			[
+				"note-displ",
+				"client-angular/app/note-display.component.ts"
+			],
+			[
+				"config.com",
+				"client-angular/app/config.component.ts"
+			],
+			[
+				"config",
+				"client/partials/config.html"
+			],
+			[
+				"route",
+				"server/routes.js"
+			],
+			[
+				"controller",
+				"client/controllers.js"
+			],
+			[
+				"athlete",
+				"client-angular/app/models/athlete.ts"
+			],
+			[
+				"config.html",
+				"client/partials/config.html"
+			],
+			[
+				"dra",
+				"client-angular/app/dragdrop.directive.ts"
+			],
+			[
+				"config.ht",
+				"client/partials/config.html"
+			],
+			[
+				"routes.js",
+				"server/routes.js"
+			],
+			[
+				"head",
+				"client-angular/app/header.component.ts"
+			],
+			[
+				"app-tou",
+				"client-angular/app/app-routing.module.ts"
+			],
+			[
+				"app-rou",
+				"client-angular/app/app-routing.module.js"
+			],
 			[
 				"map.js",
 				"reporting/map.js"
@@ -784,10 +1387,6 @@
 			[
 				"server",
 				"app/server/server.js"
-			],
-			[
-				"config",
-				"app/server/config.js"
 			],
 			[
 				"login.js",
@@ -884,10 +1483,6 @@
 			[
 				"integrationen",
 				"app/server/common/lib/integrations/IntegrationEngine.js"
-			],
-			[
-				"config.",
-				"app/server/config.js"
 			],
 			[
 				"integratione",
@@ -1016,206 +1611,6 @@
 			[
 				"docker-c",
 				"docker-compose.yml"
-			],
-			[
-				"resetpass",
-				"app/server/emailTemplates/userResetPassword.ejs"
-			],
-			[
-				"timleine.js",
-				"app/client/views/base/Timeline.js"
-			],
-			[
-				"login.j",
-				"app/server/routes/login.js"
-			],
-			[
-				"user.j",
-				"app/server/models/User.js"
-			],
-			[
-				"privatekey",
-				"app/server/privatekey.pem"
-			],
-			[
-				"syncexte",
-				"app/server/models/tasks/SyncExternalTask.js"
-			],
-			[
-				"env",
-				"app/server/common/lib/env.js"
-			],
-			[
-				"env.js",
-				"app/server/common/lib/env.js"
-			],
-			[
-				"gulpfil",
-				"devops/gulpfile.client.js"
-			],
-			[
-				"settings",
-				"app/client/views/settings/settingsViewModel.js"
-			],
-			[
-				"reports.html",
-				"app/server/views/reports.html"
-			],
-			[
-				"reportsap",
-				"app/server/api/reportsAPI.js"
-			],
-			[
-				"reports",
-				"app/server/api/reportsAPI.js"
-			],
-			[
-				"main.js",
-				"app/client/main.js"
-			],
-			[
-				"jirainte",
-				"app/server/common/lib/integrations/JiraIntegrationEngine.js"
-			],
-			[
-				"integrationengin",
-				"app/server/common/lib/integrations/IntegrationEngine.js"
-			],
-			[
-				"taskmanag",
-				"app/server/lib/TaskManager.js"
-			],
-			[
-				"taskmana",
-				"app/server/lib/TaskManager.js"
-			],
-			[
-				"extra",
-				"app/client/lib/extraBindings.js"
-			],
-			[
-				"confi",
-				"app/server/config.js"
-			],
-			[
-				"login.tests.j",
-				"app/client/tests/login/login.tests.js"
-			],
-			[
-				"usersap",
-				"app/server/api/UsersAPI.js"
-			],
-			[
-				"account.js",
-				"app/server/common/models/Account.js"
-			],
-			[
-				"login",
-				"app/client/login/login.js"
-			],
-			[
-				"synctask",
-				"app/server/models/tasks/SyncExternalTask.js"
-			],
-			[
-				"roadmunk-selec",
-				"app/client/lib/knockout-roadmunk-select.js"
-			],
-			[
-				"set.js",
-				"app/server/common/models/Set.js"
-			],
-			[
-				"passport",
-				"app/server/node_modules/passport.socketio/test/fixture/setupPassport.js"
-			],
-			[
-				"usersa",
-				"app/server/api/UsersAPI.js"
-			],
-			[
-				"externalau",
-				"app/server/lib/ExternalAuthManager.js"
-			],
-			[
-				"toolbox",
-				"app/server/common/tests/toolbox.js"
-			],
-			[
-				"modelstorage",
-				"app/client/models/ModelStorage.js"
-			],
-			[
-				"userapi",
-				"app/server/api/UsersAPI.js"
-			],
-			[
-				"login.test",
-				"app/client/tests/login/login.tests.js"
-			],
-			[
-				"user",
-				"app/server/common/models/User.js"
-			],
-			[
-				"testingap",
-				"app/server/api/TestingAPI.js"
-			],
-			[
-				"users.test",
-				"app/client/tests/api/UsersAPI.tests.js"
-			],
-			[
-				"resta",
-				"app/server/api/RESTAPI.js"
-			],
-			[
-				"modelc",
-				"app/server/common/models/ModelCache.js"
-			],
-			[
-				"modelsto",
-				"app/client/models/ModelStorage.js"
-			],
-			[
-				"accountsa",
-				"app/server/api/AccountsAPI.js"
-			],
-			[
-				"pare",
-				"app/client/tests/ParentTestRunner.js"
-			],
-			[
-				"childtest",
-				"app/client/tests/ChildTestRunner.js"
-			],
-			[
-				"toolbo",
-				"app/server/common/tests/toolbox.js"
-			],
-			[
-				"testingapi",
-				"app/server/api/TestingAPI.js"
-			],
-			[
-				"toobox",
-				"app/client/tests/toolbox.js"
-			],
-			[
-				"exportview",
-				"app/client/views/base/ExportViewModel.js"
-			],
-			[
-				"jasmineexten",
-				"app/client/lib/vendor/bower_components/knockout-switch-case/spec/lib/jasmine.extensions.js"
-			],
-			[
-				"jasminee",
-				"app/client/lib/vendor/bower_components/knockout-switch-case/spec/lib/jasmine.extensions.js"
-			],
-			[
-				"jasmine",
-				"devops/node_modules/less/.grunt/grunt-contrib-jasmine/jasmine.js"
 			]
 		],
 		"width": 0.0

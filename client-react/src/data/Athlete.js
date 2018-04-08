@@ -5,8 +5,8 @@ const Athlete = Immutable.Record({
   'shortName' : 'New',
   'name' : 'New Athlete',
   //'position' : 'none',
-  //'skills' : new Immutable.Set(),
-  //'accountID' : '',
+  'skills' : new Immutable.Set(),
+  'accountID' : '',
 });
 
 export default Athlete;

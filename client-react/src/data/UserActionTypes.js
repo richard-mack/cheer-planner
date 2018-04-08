@@ -1,0 +1,9 @@
+const UserActionTypes = {
+	LOGIN : 'LOGIN',
+	LOGIN_RESPONSE : 'LOGIN_RESPONSE',
+	UPDATE_LOGIN_DETAILS : 'UPDATE_LOGIN_DETAILS',
+	LOGOUT : 'LOGOUT',
+	LOGOUT_RESPONSE : 'LOGOUT_RESPONSE',
+}
+
+export default UserActionTypes;

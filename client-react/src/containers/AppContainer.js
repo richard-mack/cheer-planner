@@ -7,6 +7,8 @@ import RoutineStore from '../data/RoutineStore';
 import RoutineActions from '../data/RoutineActions';
 import StateStore from '../data/StateStore';
 import StateActions from '../data/StateActions';
+import UserStore from '../data/UserStore';
+import UserActions from '../data/UserActions';
 
 import debugFlags from '../debugFlags';
 
@@ -15,6 +17,7 @@ function getStores() {
     AthleteStore,
     RoutineStore,
     StateStore,
+    UserStore,
   ];
 }
 
@@ -26,69 +29,19 @@ function getState() {
 
     appState : StateStore.getState(),
 
-    routinePositions : RoutineStore.getState().get('counts').reduce(
-      (accumulator, count) => {
-        if (debugFlags.routinePositions) {
-          console.log('Count To Process:');
-          console.log(count ? count.toObject() : 'Null Count');
-        }
-        let athletesList = AthleteStore.getState().get('athletesList').map(athlete => {
-          return {id : athlete.id, shortName : athlete.shortName}
-        }).toArray();
-        let unusedCounter = 1;
-        let newCountPositions = {};
-        // Iterate through the athletes, placing each one
-        for (let athlete of athletesList) {
-          if (count && count.get(athlete.id)) {
-            // Is the athlete moved on this count?
-            newCountPositions[athlete.id] = {
-              posx : count.get(athlete.id).posx, 
-              posy : count.get(athlete.id).posy, 
-              shortName : athlete.shortName
-            }
-          } else if (accumulator.length > 0 && accumulator.slice(-1)[0][athlete.id].posx != 1.03){
-            // Were they previously placed on the floor?
-            newCountPositions[athlete.id] = accumulator.slice(-1)[0][athlete.id]
-          } else {
-            // They aren't on the floor. Add to the usused athletes list.
-            newCountPositions[athlete.id] = {posx : 1.03, posy : 0.025*unusedCounter, shortName : athlete.shortName}
-            unusedCounter++;
-          }
-        }
-        if (debugFlags.routinePositions) {
-          console.log('New Count Positions:')
-          console.log(newCountPositions);
-        }
+    user : UserStore.getState(),
 
-        accumulator.push(newCountPositions);
-        if (debugFlags.routinePositions) {
-          console.log('Accumulator Status');
-          console.log(accumulator);
-        }
-        return accumulator;
-      }, []
-    ),
-
-    countNotes : RoutineStore.getState().get('counts').reduce((accumulator, count) => {
-      // Early Exit
-      if (accumulator.length == 0)
-        return ['No Comment'];
-
-      let newNote;
-      if (count)
-        newNote = count.get('note');
-      else
-        newNote = accumulator[accumulator.length-1];
-
-      accumulator.push(newNote);
-      return accumulator;
-    }, []),
-
+    onClickOpenAthleteDetails : StateActions.openAthleteDetails,
     onChangeAthleteDetails : AthleteActions.changeAthleteDetails,
+    onClickCloseAthleteDetails : StateActions.closeAthleteDetails,
 
-    onClickAthlete : AthleteActions.openAthleteDetails,
+    onClickOpenCountDetails : StateActions.openCountDetails,
+    onChangeCountDetails : RoutineActions.changeCountDetails,
+    onClickCloseCountDetails : StateActions.closeCountDetails,
+
+    upsertNote : RoutineActions.upsertNote,
+
     onClickAddAthlete : AthleteActions.createAthlete,
-    onClickCloseAthleteDetails : AthleteActions.closeAthleteDetails,
     onDeleteAthlete : AthleteActions.deleteAthlete,
 
     setCurrentCount : StateActions.setCurrentCount,
@@ -96,6 +49,12 @@ function getState() {
 
     hideAthlete : StateActions.hideAthlete,
     showAthlete : StateActions.showAthlete,
+
+    saveRoutine : RoutineActions.saveRoutine,
+    saveAthlete : AthleteActions.saveAthlete,
+
+    login : UserActions.login,
+    onChangeLoginDetails : UserActions.onChangeLoginDetails,
   };
 }
 

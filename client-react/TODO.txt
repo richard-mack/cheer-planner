@@ -1,0 +1,35 @@
+TODOS:
+
+- Permissions
+- Sharing
+- Drag and drop
+- Skills (Feature)
+- Tablet (Huge Feature/Rewrite)
+- Refactor editing athlete/count to use less computations
+- CSS to make it all look tolerable
+- Refactor props.XYZ for more readability
+- Refactor for readability in general
+- Inventory management? // Low priority. This is a difficult problem which already has better solutions
+- Recording payments and owing? // Low priority. This is a difficult problem which already has better solutions
+
+
+Order to Build:
+
+-CSS
+- Make it work on screen resize
+- Change counts using arrow keys
+- View Only (toggle editing in code)
+- View Athlete Details
+- Add Athlete
+- CRUD Athletes
+- Drag and Drop
+- Login (Move edit permissions to code)
+- Sharing (Edit only sharing)
+- Refactor for readability of code
+- Permissions (View Only vs. Edit)
+- Skills API
+- CRUD Skills
+- User focus for next steps / Design review
+
+
+Look up how to do the triggering kind of stuff with Flux

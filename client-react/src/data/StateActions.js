@@ -28,7 +28,35 @@ const Actions = {
 			type : StateActionTypes.SHOW_ATHLETE,
 			athleteId,
 		})
-	}
+	},
+
+	openAthleteDetails(id) {
+		CheerDispatcher.dispatch({
+			type : StateActionTypes.OPEN_ATHLETE_DETAILS,
+			id,
+		});
+	},
+
+	closeAthleteDetails() {
+		CheerDispatcher.dispatch({
+			type : StateActionTypes.CLOSE_ATHLETE_DETAILS,
+		});
+	},
+
+	openCountDetails(id, countNumber) {
+		CheerDispatcher.dispatch({
+			type : StateActionTypes.OPEN_COUNT_DETAILS,
+			id,
+			countNumber,
+		});
+	},
+
+	closeCountDetails() {
+		CheerDispatcher.dispatch({
+			type : StateActionTypes.CLOSE_COUNT_DETAILS,
+		});
+	},
+
 }
 
 export default Actions;

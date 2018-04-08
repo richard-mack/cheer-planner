@@ -1,6 +1,7 @@
 import RoutineActionTypes from './RoutineActionTypes';
 import CheerDispatcher from './CheerDispatcher.js';
 import CreateID from './CreateID.js';
+import RoutineAPI from '../api/RoutineAPI';
 
 const Actions = {
 	getRoutineList() { // SHOULDDO: Once permissions are implemented, this is meaningful. Until then, it doesn't need to do anything
@@ -10,7 +11,21 @@ const Actions = {
 	},
 
 	getRoutine(id) {
+		CheerDispatcher.dispatch({
+			type : RoutineActionTypes.GET_ROUTINE,
+			id,
+		});
 
+		RoutineAPI.getRoutine(id)
+	},
+
+	saveRoutine(routine) {
+		CheerDispatcher.dispatch({
+			type : RoutineActionTypes.SAVE_ROUTINE,
+			id : routine.id,
+		});
+
+		RoutineAPI.saveRoutine(routine);
 	},
 
 	addAthlete(id) {
@@ -24,6 +39,13 @@ const Actions = {
 		CheerDispatcher.dispatch({
 			type : RoutineActionTypes.UPSERT_COUNT,
 			count,
+		})
+	},
+
+	changeCountDetails(count) {
+		CheerDispatcher.dispatch({
+			type : RoutineActionTypes.CHANGE_COUNT_DETAILS,
+			count
 		})
 	},
 

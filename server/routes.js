@@ -85,7 +85,7 @@ router.get('/status', function(req, res) {
 });
 
 router.post('/Account/', loggedIn, function (req, res) {
-    //var userID = req.user._id;
+    var userID = req.user._id;
     var id = req.user._id;
     var config = req.body.config;
     if (!config)
@@ -115,8 +115,8 @@ router.get('/:type/:id?/', function (req, res) {
     if (!model)
         return res.status(400).json({error : 'No Models of that type exist'});
     // MUSTDO: Once permissions are implemented, restore accountId check
-    //query = {accountID : req.user._id};
-    query = {};
+    query = {accountID : req.user._id};
+    //query = {};
     if (req.params.id)
         query.id = req.params.id;
     else
@@ -124,13 +124,14 @@ router.get('/:type/:id?/', function (req, res) {
     
     return model.find(query, include).then(function (result) {
         if (result[0] && req.params.type == 'Routine' && req.params.id) { // If getting a specific routine, then grab the Athletes too
-            //if (!result[0]) // If there is no matching routine
-            //    return res.status(200).json({routine : new Routine({id : req.params.id}), athletes : []});
+            if (!result[0]) // If there is no matching routine
+                return res.status(200).json({routine : new Routine({id : req.params.id}), athletes : []});
             var returnObj = {};
             returnObj.routine = result[0];
             return Promise.all(
                 returnObj.routine.athletes.map(function (athleteID) {
-                    return Athlete.findOne({id : athleteID}) // MUSTDO: Add auth restriction here as `accountID : req.user._id` or something
+                    // MUSTDO: Set this up as viewerList for basic sharing. This will allow us to implement sharing instead of everyone sharing an account.
+                    return Athlete.findOne({id : athleteID, accountID : req.user._id}) // MUSTDO: Add auth restriction here as `accountID : req.user._id` or something
                 }))
             .then(function (arrayOfAthletes) {
                 returnObj.athletes = arrayOfAthletes;
@@ -168,10 +169,12 @@ router.post('/:type/', function (req, res) {
                     tempModel[propertyName] = modelToSave[propertyName];
             });
             // MUSTDO: Once permissions are implemented, restore auth check
-            //tempModel.accountID = req.user._id;
+            tempModel.accountID = req.user._id;
             tempModel.lastModified = new Date();
             console.log('Temp Model: '+JSON.stringify(tempModel));
+            // MUSTDO: Once permissions are implmemented, restore auth check
             return model.findOneAndUpdate({id : modelToSave.id, accountID : req.user._id}, tempModel, {upsert : true, new : true})
+            //return model.findOneAndUpdate({id : modelToSave.id}, tempModel, {upsert : true, new : true})
         })
 
         ).then(function (arrayOfResults) {return res.status(200).json(arrayOfResults);

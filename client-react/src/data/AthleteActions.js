@@ -1,8 +1,27 @@
 import AthleteActionTypes from './AthleteActionTypes';
-import CheerDispatcher from './CheerDispatcher.js';
+import CheerDispatcher from './CheerDispatcher';
 import CreateID from './CreateID.js';
+import AthleteAPI from '../api/AthleteAPI';
 
 const Actions = {
+	getAthlete(id) {
+		CheerDispatcher.dispatch({
+			type : AthleteActionTypes.GET_ATHLETE,
+			id,
+		});
+
+		AthleteAPI.getAthlete(id);
+	},
+
+	saveAthlete(athlete) {
+		CheerDispatcher.dispatch({
+			type : AthleteActionTypes.SAVE_ATHLETE,
+			athlete : athlete,
+		})
+
+		AthleteAPI.saveAthlete(athlete);
+	},
+
 	createAthlete(athleteData) {
 		if (!athleteData.name) {
 			throw new Error('Must have at least a name');
@@ -28,25 +47,12 @@ const Actions = {
 		});
 	},
 
-	openAthleteDetails(id) {
-		CheerDispatcher.dispatch({
-			type : AthleteActionTypes.OPEN_ATHLETE_DETAILS,
-			id,
-		});
-	},
-
 	changeAthleteDetails(athleteId, field, newValue) {
 		CheerDispatcher.dispatch({
 			type : AthleteActionTypes.CHANGE_ATHLETE_DETAILS,
 			athleteId,
 			field,
 			newValue,
-		});
-	},
-
-	closeAthleteDetails() {
-		CheerDispatcher.dispatch({
-			type : AthleteActionTypes.CLOSE_ATHLETE_DETAILS,
 		});
 	}
 }

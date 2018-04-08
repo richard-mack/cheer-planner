@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Athlete } from './models/athlete';
 import { Routine } from './models/routine';
+import { Config } from './models/config';
 
 // MUSTDO: Implement account level configurations
 
@@ -12,7 +13,7 @@ export class FloorDisplayComponent implements OnInit {
 	// Input Data
 	@Input() routine: Routine;
 	@Input() currentCountNumber: number;
-	@Input() config : object;
+	@Input() config : Config;
 
 	ngOnInit() : void {
 		this.computeAthletePositions();
@@ -29,6 +30,7 @@ export class FloorDisplayComponent implements OnInit {
 	// Methods
 	onAthleteClick(athleteID : string): void {
 		this.selectedAthlete = this.routine.athletes.find(athlete => athleteID == athlete.id);
+		console.log(this.selectedAthlete);
 	}
 
 	onNewAthleteClick() : void {
@@ -52,8 +54,8 @@ export class FloorDisplayComponent implements OnInit {
 					athleteID : athlete.id,  
 					athleteName : athlete.firstName,
 					note : "Unused",
-					posx : ((this.config['width']) - 115)/(this.config['matWidth']*9),
-					posy : (15*(unusedCount+1)) / this.config['matHeight']
+					posx : ((this.config.matDisplay['width']) - 115)/(this.config.matDisplay['matWidth']*9),
+					posy : (15*(unusedCount+1)) / this.config.matDisplay['matHeight']
 				});
 				unusedCount++;
 			}
@@ -76,8 +78,8 @@ export class FloorDisplayComponent implements OnInit {
 		console.log(data);
 		// Now that we have the count, we want to translate the distance moved into a percentage of the floor
 		let distanceMoved = {
-			movePercentageX : (data.event.pageX - data.dragStartData.pageX) / (this.config.width - 120),
-			movePercentageY : (data.event.pageY - data.dragStartData.pageY) / this.config.height
+			movePercentageX : (data.event.pageX - data.dragStartData.pageX) / (this.config.matDisplay.width - 120),
+			movePercentageY : (data.event.pageY - data.dragStartData.pageY) / this.config.matDisplay.height
 		}
 		//console.log(countToModify);
 		countToModify.posx = countToModify.posx + distanceMoved.movePercentageX;

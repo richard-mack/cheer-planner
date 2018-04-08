@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
 	template : `
 		<header></header>
 		<div style="position: absolute; height: 95%; width:100%; top:5%;">
-			<floor-display *ngIf="routine && config && config.matDisplay && config.matDisplay.enabled" [routine]="routine" [currentCountNumber]="currentCountNumber" [config]="config.matDisplay"></floor-display>
+			<floor-display *ngIf="routine && config && config.matDisplay && config.matDisplay.enabled" [routine]="routine" [currentCountNumber]="currentCountNumber" [config]="config"></floor-display>
 			<numeric-input *ngIf="routine && config && config.numericInput && config.numericInput.enabled" [(currentCountNumber)]="currentCountNumber" [config]="config.numericInput"></numeric-input>
 			<note-display *ngIf="routine && routine.notes && config && config.noteDisplay && config.noteDisplay.enabled" [(countNote)]="routine.notes[currentCountNumber]" [config]="config.noteDisplay"></note-display>
 			<button
